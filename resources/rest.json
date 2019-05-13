@@ -1,0 +1,35 @@
+{
+  "server": {
+    "name": "Faucet-services",
+    "description": "ProximaX Sirius Faucet",
+    "port": 8081,
+    "host": "",
+    "allowCrossDomain": true
+  },
+  "blockchain": {
+    "apiUrl": "http://bcstage1.xpxsirius.io:3000",
+    "network": "publicTest"
+  },
+  "app": {
+    "FaucetMasterAcctPrivateKey": "42CC4A8C87012B8117532C2A7BC7FEAE38141D7E81717D5DF01F470CC8F5A0CB",
+    "namespace": "prx",
+    "maxXpx": 100000000,
+    "mosaicId": "0DC67FBE1CAD29E3"
+  },
+  "blackList":{
+    "byIp": false,
+    "byAddress": true
+  },
+  "logging": {
+    "console": {
+      "colorize": true,
+      "level": "verbose",
+      "handleExceptions": true,
+      "prettyPrint": true,
+      "timestamp": true
+    },
+    "errCtrl": {
+      "maxNumErr": 100
+    }
+  }
+}
