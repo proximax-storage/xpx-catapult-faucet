@@ -2,7 +2,7 @@ package Faucet
 
 import (
 	"github.com/json-iterator/go"
-	"github.com/proximax-storage/faucet-backend/utils"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -13,9 +13,9 @@ var (
 	Config ConfigData
 )
 
-func LoadConfig() (*ConfigData, error) {
+func LoadConfig(file *string) (*ConfigData, error) {
 	// Open our jsonFile
-	jsonFile, err := os.Open("./resources/rest.json")
+	jsonFile, err := os.Open(*file)
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		return nil, err

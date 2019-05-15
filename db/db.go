@@ -4,7 +4,7 @@
 package db
 
 import (
-	"github.com/proximax-storage/faucet-backend"
+	"github.com/proximax-storage/xpx-catapult-faucet"
 	"sync"
 )
 

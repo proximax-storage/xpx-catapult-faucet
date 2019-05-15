@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/json-iterator/go"
-	"github.com/proximax-storage/faucet-backend"
-	"github.com/proximax-storage/faucet-backend/utils"
+	"github.com/proximax-storage/xpx-catapult-faucet"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	"net/http"
 	"strings"
 )

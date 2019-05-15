@@ -1,1 +1,1 @@
-# faucet-backend
+# xpx-catapult-faucet

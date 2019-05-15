@@ -3,10 +3,10 @@ package blockchain
 import (
 	"context"
 	"fmt"
-	"github.com/proximax-storage/faucet-backend"
-	"github.com/proximax-storage/faucet-backend/db"
-	"github.com/proximax-storage/faucet-backend/utils"
 	"github.com/proximax-storage/go-xpx-catapult-sdk/sdk"
+	"github.com/proximax-storage/xpx-catapult-faucet"
+	"github.com/proximax-storage/xpx-catapult-faucet/db"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	"math/big"
 	"strings"
 	"time"

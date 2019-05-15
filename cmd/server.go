@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/proximax-storage/faucet-backend"
-	"github.com/proximax-storage/faucet-backend/db"
-	"github.com/proximax-storage/faucet-backend/routes"
-	"github.com/proximax-storage/faucet-backend/utils"
+	"github.com/proximax-storage/xpx-catapult-faucet"
+	"github.com/proximax-storage/xpx-catapult-faucet/db"
+	"github.com/proximax-storage/xpx-catapult-faucet/routes"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	"log"
 	"net/http"
 	"os"
@@ -16,9 +17,23 @@ import (
 	"time"
 )
 
-func main() {
+const (
+	defaultdist       = "./dist/"
+	defaultConfigFile = "./resources/rest.json"
+)
 
-	config, err := Faucet.LoadConfig()
+var (
+	dist       *string
+	configFile *string
+)
+
+func main() {
+	dist = flag.String("dist", defaultdist, "")
+	configFile = flag.String("configFile", defaultConfigFile, "")
+
+	flag.Parse()
+
+	config, err := Faucet.LoadConfig(configFile)
 	if err != nil {
 		panic(err)
 	}
@@ -38,7 +53,7 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 
-	route := routes.NewRouter()
+	route := routes.NewRouter(dist)
 
 	srv := &http.Server{
 		Addr:    config.FormatServer(),

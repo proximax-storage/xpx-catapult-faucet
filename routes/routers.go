@@ -3,9 +3,9 @@ package routes
 import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
-	"github.com/proximax-storage/faucet-backend"
-	"github.com/proximax-storage/faucet-backend/services/blockchain"
-	"github.com/proximax-storage/faucet-backend/utils"
+	"github.com/proximax-storage/xpx-catapult-faucet"
+	"github.com/proximax-storage/xpx-catapult-faucet/services/blockchain"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	"path"
 	"path/filepath"
 	"strings"
@@ -20,8 +20,11 @@ type Route struct {
 
 type Routes []Route
 
-func NewRouter() *gin.Engine {
+var defaultdist *string
 
+func NewRouter(dist *string) *gin.Engine {
+
+	defaultdist = dist
 	router := gin.New()
 
 	router.Use(
@@ -81,8 +84,8 @@ func web(c *gin.Context) {
 	file = strings.Split(file, "?")[0]
 	ext := filepath.Ext(file)
 	if file == "" || ext == "" {
-		c.File("./dist/index.html")
+		c.File(*defaultdist + "index.html")
 	} else {
-		c.File("./dist/" + path.Join(dir, file))
+		c.File(*defaultdist + path.Join(dir, file))
 	}
 }

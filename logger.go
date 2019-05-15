@@ -2,7 +2,7 @@ package Faucet
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/proximax-storage/faucet-backend/utils"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	"time"
 )
 

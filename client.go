@@ -1,8 +1,8 @@
 package Faucet
 
 import (
-	"github.com/proximax-storage/faucet-backend/utils"
 	"github.com/proximax-storage/go-xpx-catapult-sdk/sdk"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 )
 
 var (
