@@ -6,12 +6,17 @@ package db
 import (
 	"github.com/proximax-storage/xpx-catapult-faucet"
 	"sync"
+	"time"
 )
+
+type reviews struct {
+	date time.Time
+}
 
 var (
 	once          sync.Once
-	listByIP      map[string]string
-	listByAddress map[string]string
+	listByIP      map[string]reviews
+	listByAddress map[string]reviews
 )
 
 func Init() {
@@ -20,10 +25,10 @@ func Init() {
 
 func blackList() {
 	if Faucet.Config.BlackList.ByIp {
-		listByIP = make(map[string]string)
+		listByIP = make(map[string]reviews)
 	}
 	if Faucet.Config.BlackList.ByAddress {
-		listByAddress = make(map[string]string)
+		listByAddress = make(map[string]reviews)
 	}
 }
 
@@ -34,29 +39,31 @@ func StoreClient(address, t string) error {
 	}
 
 	if t == "byAddress" {
-		listByAddress[address] = "valid"
+		listByAddress[address] = reviews{date: time.Now().Add(24 * time.Hour)}
 	}
 	if t == "byIp" {
-		listByIP[address] = "valid"
+		listByIP[address] = reviews{date: time.Now().Add(24 * time.Hour)}
 	}
 	return nil
 }
 
-func DeleteBlackList(value, t string) {
-	if t == "byAddress" {
-		delete(listByAddress, value)
-	}
-	if t == "byIp" {
-		delete(listByIP, value)
-	}
-}
-
 func CheckBlackList(value string, t string) bool {
 	if t == "byAddress" {
-		return listByAddress[value] != ""
+		d, v := listByAddress[value]
+		if v == true {
+			if d.date.Unix() >= time.Now().Unix() {
+				return true
+			}
+		}
 	}
+
 	if t == "byIp" {
-		return listByIP[value] != ""
+		d, v := listByIP[value]
+		if v == true {
+			if d.date.Unix() >= time.Now().Unix() {
+				return true
+			}
+		}
 	}
 
 	return false

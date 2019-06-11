@@ -12,7 +12,7 @@ var (
 func InitClient() {
 	utils.Logger(0, "Initializing rest clients")
 
-	conf, err := sdk.NewConfig(Config.Blockchain.ApiUrl, Config.NetworkType())
+	conf, err := sdk.NewConfig([]string{Config.Blockchain.ApiUrl}, Config.NetworkType(), 0)
 	if err != nil {
 		panic(err)
 	}

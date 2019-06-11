@@ -52,7 +52,7 @@ func createTransfer(Address string) error {
 		balance = 0
 	} else {
 		for _, m := range restTx.Mosaics {
-			id := sdk.BigIntegerToHex((*big.Int)(m.MosaicId))
+			id := bigIntegerToHex((*big.Int)(m.MosaicId))
 			if strings.ToUpper(id) == strings.ToUpper(Faucet.Config.App.MosaicId) {
 				balance = m.Amount.Int64()
 			}
@@ -86,4 +86,25 @@ func createTransfer(Address string) error {
 	}
 
 	return nil
+}
+
+// analog JAVA Uint64.bigIntegerToHex
+func bigIntegerToHex(id *big.Int) string {
+	u := fromBigInt(id)
+	return strings.ToUpper(intToHex(u[1]) + intToHex(u[0]))
+}
+
+func intToHex(u uint32) string {
+	return fmt.Sprintf("%08x", u)
+}
+
+func fromBigInt(int *big.Int) []uint32 {
+	if int == nil {
+		return []uint32{0, 0}
+	}
+
+	var u64 = uint64(int.Int64())
+	l := uint32(u64 & 0xFFFFFFFF)
+	r := uint32(u64 >> 32)
+	return []uint32{l, r}
 }
