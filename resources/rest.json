@@ -2,7 +2,7 @@
   "server": {
     "name": "Faucet-services",
     "description": "ProximaX Sirius Faucet",
-    "port": 8082,
+    "port": 8083,
     "host": "",
     "allowCrossDomain": true
   },
