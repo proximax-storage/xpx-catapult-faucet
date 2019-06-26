@@ -1,0 +1,39 @@
+{
+  "name": "bc-testnet-faucet",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "serve:test": "cp ./src/environment/environment.test.js ./src/environment/environment.js && vue-cli-service serve",
+    "serve:prod": "cp ./src/environment/environment.prod.js ./src/environment/environment.js && vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:test": "cp ./src/environment/environment.test.js ./src/environment/environment.js && vue-cli-service build",
+    "build:prod": "cp ./src/environment/environment.prod.js ./src/environment/environment.js && vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "register-service-worker": "^1.6.2",
+    "vue": "^2.6.10",
+    "vue-axios": "^2.1.4",
+    "vue-notification": "^1.3.16",
+    "vue-router": "^3.0.3",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-pwa": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "sass": "^1.18.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
