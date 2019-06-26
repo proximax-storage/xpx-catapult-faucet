@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/js/chunk-vendors.aa407ccc.js"
   },
   {
-    "revision": "daae2b3403c61ebe7b50",
-    "url": "/js/app.dd92b00e.js"
+    "revision": "05c995445023bc8b7ecf",
+    "url": "/js/app.8db6182b.js"
   },
   {
-    "revision": "2ac4cd19fac15f864316",
-    "url": "/js/FaucetGet-vue.490e4969.js"
+    "revision": "d3ad787b9cbcde8b7a3e",
+    "url": "/js/FaucetGet-vue.659729a9.js"
   },
   {
-    "revision": "36d07c8d10c2de63dbfc3307fff11d4e",
+    "revision": "900f0e6bea2f291935b024102514ec98",
     "url": "/index.html"
   },
   {
@@ -24,11 +24,11 @@ self.__precacheManifest = [
     "url": "/img/background-proximax.1fc48ca2.jpg"
   },
   {
-    "revision": "daae2b3403c61ebe7b50",
-    "url": "/css/app.4710f035.css"
+    "revision": "05c995445023bc8b7ecf",
+    "url": "/css/app.4b9d2caf.css"
   },
   {
-    "revision": "2ac4cd19fac15f864316",
-    "url": "/css/FaucetGet-vue.3854d5f8.css"
+    "revision": "d3ad787b9cbcde8b7a3e",
+    "url": "/css/FaucetGet-vue.dbdf2cd6.css"
   }
 ];
