@@ -2,7 +2,7 @@ package utils
 
 import (
 	e "errors"
-	"github.com/proximax-storage/go-xpx-catapult-sdk/sdk"
+	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"regexp"
 	"strings"
 )

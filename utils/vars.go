@@ -2,7 +2,7 @@ package utils
 
 import (
 	"github.com/json-iterator/go"
-	"github.com/proximax-storage/go-xpx-catapult-sdk/sdk"
+	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 )
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary

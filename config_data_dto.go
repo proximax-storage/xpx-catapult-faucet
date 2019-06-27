@@ -1,7 +1,7 @@
 package Faucet
 
 import (
-	"github.com/proximax-storage/go-xpx-catapult-sdk/sdk"
+	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"strings"
 	"sync"
 )
