@@ -12,10 +12,10 @@ import (
 	"time"
 )
 
-func TransferXpx(Address string) error {
+func TransferXpx(Address, ip string) error {
 
 	if Faucet.Config.BlackList.ByIp {
-		err := db.StoreClient(Address, "byIp")
+		err := db.StoreClient(ip, "byIp")
 		if err != nil {
 			return Faucet.IpAddressRegistered
 		}
