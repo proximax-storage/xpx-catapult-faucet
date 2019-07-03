@@ -21,4 +21,5 @@ var (
 	CreateMosaicError      ServerError      = errors.New("mosaic creation failed")
 	CreateTransferTxnError ServerError      = errors.New("transfer txn creation failed")
 	UnexpectedError        ServerError      = errors.New("unexpected error occurred")
+	WebsocketError         ServerError      = errors.New("websocket error")
 )

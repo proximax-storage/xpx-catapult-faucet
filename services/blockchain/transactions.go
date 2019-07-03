@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
-	"github.com/proximax-storage/mocd-users-and-voting-api"
 	"github.com/proximax-storage/xpx-catapult-faucet"
 	"github.com/proximax-storage/xpx-catapult-faucet/db"
 	"github.com/proximax-storage/xpx-catapult-faucet/utils"
@@ -38,7 +37,7 @@ func AnnounceTxn(signedTxn *sdk.SignedTransaction) error {
 	ws, err := Faucet.NewWebsocket()
 	if err != nil {
 		utils.Logger(3, "Failed to create websocket: %v", err)
-		return mocd.WebsocketError
+		return Faucet.WebsocketError
 	}
 	defer ws.Close()
 
@@ -47,21 +46,21 @@ func AnnounceTxn(signedTxn *sdk.SignedTransaction) error {
 	unconfirmed, err := ws.Subscribe.UnconfirmedAdded(address)
 	if err != nil {
 		utils.Logger(3, "Failed to open websocket for unconfirmed txn: %v", err)
-		return mocd.WebsocketError
+		return Faucet.WebsocketError
 	}
 	defer unconfirmed.Unsubscribe()
 
 	confirmed, err := ws.Subscribe.ConfirmedAdded(address)
 	if err != nil {
 		utils.Logger(3, "Failed to open websocket for confirmed txn: %v", err)
-		return mocd.WebsocketError
+		return Faucet.WebsocketError
 	}
 	defer confirmed.Unsubscribe()
 
 	status, err := ws.Subscribe.Status(address)
 	if err != nil {
 		utils.Logger(3, "Failed to open websocket for status: %v", err)
-		return mocd.WebsocketError
+		return Faucet.WebsocketError
 	}
 	defer status.Unsubscribe()
 

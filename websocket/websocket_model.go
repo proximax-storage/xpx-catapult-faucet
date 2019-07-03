@@ -5,28 +5,44 @@
 package websocket
 
 import (
-	"github.com/proximax-storage/csd-blockchain-services"
+	"encoding/binary"
 	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
+	"math/big"
 )
+
+type Uint64Dto [2]uint32
+
+func (dto Uint64Dto) ToBigInt() *big.Int {
+	if dto[0] == 0 && dto[1] == 0 {
+		return &big.Int{}
+	}
+	var int big.Int
+	b := make([]byte, len(dto)*4)
+	binary.BigEndian.PutUint32(b[:len(dto)*2], dto[1])
+	binary.BigEndian.PutUint32(b[len(dto)*2:], dto[0])
+
+	int.SetBytes(b)
+	return &int
+}
 
 type blockInfoDTO struct {
 	BlockMeta struct {
-		Hash            string             `json:"hash"`
-		GenerationHash  string             `json:"generationHash"`
-		TotalFee        services.Uint64Dto `json:"totalFee"`
-		NumTransactions uint64             `json:"numTransactions"`
+		Hash            string    `json:"hash"`
+		GenerationHash  string    `json:"generationHash"`
+		TotalFee        Uint64Dto `json:"totalFee"`
+		NumTransactions uint64    `json:"numTransactions"`
 		// MerkleTree      uint64DTO `json:"merkleTree"` is needed?
 	} `json:"meta"`
 	Block struct {
-		Signature             string             `json:"signature"`
-		Signer                string             `json:"signer"`
-		Version               uint64             `json:"version"`
-		Type                  uint64             `json:"type"`
-		Height                services.Uint64Dto `json:"height"`
-		Timestamp             services.Uint64Dto `json:"timestamp"`
-		Difficulty            services.Uint64Dto `json:"difficulty"`
-		PreviousBlockHash     string             `json:"previousBlockHash"`
-		BlockTransactionsHash string             `json:"blockTransactionsHash"`
+		Signature             string    `json:"signature"`
+		Signer                string    `json:"signer"`
+		Version               uint64    `json:"version"`
+		Type                  uint64    `json:"type"`
+		Height                Uint64Dto `json:"height"`
+		Timestamp             Uint64Dto `json:"timestamp"`
+		Difficulty            Uint64Dto `json:"difficulty"`
+		PreviousBlockHash     string    `json:"previousBlockHash"`
+		BlockTransactionsHash string    `json:"blockTransactionsHash"`
 	} `json:"block"`
 }
 
@@ -69,15 +85,15 @@ func (dto *blockInfoDTO) toStruct() (*sdk.BlockInfo, error) {
 		NetworkType:           nt,
 		Hash:                  dto.BlockMeta.Hash,
 		GenerationHash:        dto.BlockMeta.GenerationHash,
-		TotalFee:              services.Uint64Dto(dto.BlockMeta.TotalFee).ToBigInt(),
+		TotalFee:              Uint64Dto(dto.BlockMeta.TotalFee).ToBigInt(),
 		NumTransactions:       dto.BlockMeta.NumTransactions,
 		Signature:             dto.Block.Signature,
 		Signer:                pa,
 		Version:               v,
 		Type:                  dto.Block.Type,
-		Height:                services.Uint64Dto(dto.Block.Height).ToBigInt(),
-		Timestamp:             services.Uint64Dto(dto.Block.Timestamp).ToBigInt(),
-		Difficulty:            services.Uint64Dto(dto.Block.Difficulty).ToBigInt(),
+		Height:                Uint64Dto(dto.Block.Height).ToBigInt(),
+		Timestamp:             Uint64Dto(dto.Block.Timestamp).ToBigInt(),
+		Difficulty:            Uint64Dto(dto.Block.Difficulty).ToBigInt(),
 		PreviousBlockHash:     dto.Block.PreviousBlockHash,
 		BlockTransactionsHash: dto.Block.BlockTransactionsHash,
 	}, nil
