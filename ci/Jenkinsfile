@@ -1,0 +1,56 @@
+pipeline {
+  agent {
+    node {
+      label 'docker-build-node'
+    }
+  }
+  
+  options {
+    timestamps()
+  }
+
+  environment {
+        DOCKER_REGISTRY = "249767383774.dkr.ecr.ap-southeast-1.amazonaws.com"
+        CREDENTIAL_ID = "ecr:ap-southeast-1:jenkins-ecr"
+        IMAGE = "xpx-chain-faucet"
+    }
+
+  stages {
+    stage('Build') {
+      steps {
+        //
+        withCredentials([sshUserPrivateKey(credentialsId: 'github-shinneng', keyFileVariable: 'SSH_KEY_ID')]) {
+          // writeFile file: '/root/.ssh/id_ed25519', text: $SSH_KEY_FOR_SHINNENG'registry=https://nexus.internal.proximax.io/repository/npm-group/\n@scope:registry=https://nexus.internal.proximax.io/repository/npm-private/\nemail=jenkins@proximax.io\nalways-auth=true\n_auth=' + env.nexusAuth + '\n'
+        // with docker image go:alpine
+          withDockerContainer(image: 'go:1.12.6-alpine3.9', args '-v ${SSH_KEY_ID}:/root/.ssh/id_rsa') {
+            sh '''
+            apk update && apk upgrade && apk add --no-cache bash git openssh
+            git config --global url.ssh://git@github.com/.insteadOf https://github.com/
+            mkdir /root/.ssh && echo "StrictHostKeyChecking no" > /root/.ssh/config
+            chmod 400 /root/.ssh/id_rsa
+            go get -d
+            cd cmd
+            '''
+          }
+        }
+      }
+    }
+
+    stage('Build and Publish Release Image'){
+      // when {
+      //   tag "release-*"   // only run these stage in tag release-*
+      // }
+      
+      steps {
+        echo 'Build and Publish Image'
+        script {
+          def newImage = docker.build("${IMAGE}")
+          docker.withRegistry("https://${DOCKER_REGISTRY}", "${CREDENTIAL_ID}"){
+            newImage.push("${env.GIT_BRANCH}") // if a tag commit, then env.GIT_BRANCH returns the tag name instead of a branch
+          }
+        }
+      }
+      
+    }
+  }
+}
