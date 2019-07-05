@@ -39,9 +39,9 @@ pipeline {
     }
 
     stage('Build and Publish Release Image'){
-      // when {
-      //   tag "release-*"   // only run these stage in tag release-*
-      // }
+      when {
+        tag "v*"   // only run these stage in tag v*
+      }
       
       steps {
         echo 'Build and Publish Image'
@@ -52,7 +52,21 @@ pipeline {
           }
         }
       }
-      
+      post {
+        success {
+          slackSend channel: '#devops',
+            color: 'good',
+            message: "Release with Tag *${env.GIT_BRANCH}* build of *${currentBuild.fullDisplayName}* completed successfully :100:\nPushed Docker image ${DOCKER_REGISTRY}/${IMAGE}:${env.GIT_BRANCH}"
+        }
+      }
+    }
+    
+    post {
+      failure {
+        slackSend channel: '#devops',
+          color: 'bad',
+          message: "Branch *${env.GIT_BRANCH}* of *${currentBuild.fullDisplayName}* FAILED :scream:"
+      }
     }
   }
 }
