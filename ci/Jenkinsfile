@@ -12,7 +12,7 @@ pipeline {
   environment {
         DOCKER_REGISTRY = "249767383774.dkr.ecr.ap-southeast-1.amazonaws.com"
         CREDENTIAL_ID = "ecr:ap-southeast-1:jenkins-ecr"
-        IMAGE = "xpx-chain-faucet"
+        IMAGE = "xpx-catapult-faucet"
     }
 
   stages {
@@ -29,6 +29,7 @@ pipeline {
             echo "StrictHostKeyChecking no" > /root/.ssh/config
             chmod 400 /root/.ssh/id_rsa
             go get -d
+            go get github.com/gin-contrib/gzip
             cd cmd
             go build -o server.run
             '''
