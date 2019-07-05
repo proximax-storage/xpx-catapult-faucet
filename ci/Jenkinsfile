@@ -40,7 +40,7 @@ pipeline {
 
     stage('Build and Publish Release Image'){
       when {
-        tag "v*"   // only run these stage in tag v*
+        branch 'master'   // only run this stage in master branch
       }
       
       steps {
@@ -48,7 +48,8 @@ pipeline {
         script {
           def newImage = docker.build("${IMAGE}")
           docker.withRegistry("https://${DOCKER_REGISTRY}", "${CREDENTIAL_ID}"){
-            newImage.push("${env.GIT_BRANCH}") // if a tag commit, then env.GIT_BRANCH returns the tag name instead of a branch
+            newImage.push("master-jenkins-build-${env.BUILD_NUMBER}") // push using Jenkins build number
+            newImage.push("master") //update Docker Image master
           }
         }
       }
@@ -56,7 +57,7 @@ pipeline {
         success {
           slackSend channel: '#devops',
             color: 'good',
-            message: "Release with Tag *${env.GIT_BRANCH}* build of *${currentBuild.fullDisplayName}* completed successfully :100:\nPushed Docker image ${DOCKER_REGISTRY}/${IMAGE}:${env.GIT_BRANCH}"
+            message: "Branch *${env.GIT_BRANCH}* build of *${currentBuild.fullDisplayName}* completed successfully :100:\nPushed Docker image ${DOCKER_REGISTRY}/${IMAGE}:${env.GIT_BRANCH}"
         }
       }
     }
