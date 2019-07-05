@@ -1,0 +1,73 @@
+pipeline {
+  agent {
+    node {
+      label 'docker-build-node'
+    }
+  }
+  
+  options {
+    timestamps()
+  }
+
+  environment {
+        DOCKER_REGISTRY = "249767383774.dkr.ecr.ap-southeast-1.amazonaws.com"
+        CREDENTIAL_ID = "ecr:ap-southeast-1:jenkins-ecr"
+        IMAGE = "xpx-catapult-faucet"
+    }
+
+  stages {
+    stage('Build') {
+      steps {
+        //
+        withCredentials([sshUserPrivateKey(credentialsId: 'github-proximax', keyFileVariable: 'SSH_KEY_ID')]) {
+          // writeFile file: '/root/.ssh/id_ed25519', text: $SSH_KEY_FOR_SHINNENG'registry=https://nexus.internal.proximax.io/repository/npm-group/\n@scope:registry=https://nexus.internal.proximax.io/repository/npm-private/\nemail=jenkins@proximax.io\nalways-auth=true\n_auth=' + env.nexusAuth + '\n'
+        // with docker image go:alpine
+          withDockerContainer(image: 'golang:1.12.6-alpine3.9', args: '-u root -v ${SSH_KEY_ID}:/root/.ssh/id_rsa') {
+            sh '''
+            apk update && apk upgrade && apk add --no-cache bash git openssh
+            git config --global url.ssh://git@github.com/.insteadOf https://github.com/
+            echo "StrictHostKeyChecking no" > /root/.ssh/config
+            chmod 400 /root/.ssh/id_rsa
+            go get -d
+            go get github.com/gin-contrib/gzip
+            cd cmd
+            go build -o server.run
+            '''
+          }
+        }
+      }
+    }
+
+    stage('Build and Publish Release Image'){
+      when {
+        branch 'master'   // only run this stage in master branch
+      }
+      
+      steps {
+        echo 'Build and Publish Image'
+        script {
+          def newImage = docker.build("${IMAGE}")
+          docker.withRegistry("https://${DOCKER_REGISTRY}", "${CREDENTIAL_ID}"){
+            newImage.push("master-jenkins-build-${env.BUILD_NUMBER}") // push using Jenkins build number
+            newImage.push("master") //update Docker Image master
+          }
+        }
+      }
+      post {
+        success {
+          slackSend channel: '#devops',
+            color: 'good',
+            message: "Branch *${env.GIT_BRANCH}* build of *${currentBuild.fullDisplayName}* completed successfully :100:\nPushed Docker image ${DOCKER_REGISTRY}/${IMAGE}:${env.GIT_BRANCH}"
+        }
+      }
+    }
+  }
+
+  post {
+    failure {
+      slackSend channel: '#devops',
+        color: 'bad',
+        message: "Branch *${env.GIT_BRANCH}* of *${currentBuild.fullDisplayName}* FAILED :scream:"
+    }
+  }
+}
