@@ -39,10 +39,6 @@ pipeline {
     }
 
     stage('Build and Publish Release Image'){
-      when {
-        branch 'master'   // only run this stage in master branch
-      }
-      
       steps {
         echo 'Build and Publish Image'
         script {
