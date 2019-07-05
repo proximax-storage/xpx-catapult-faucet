@@ -19,7 +19,7 @@ pipeline {
     stage('Build') {
       steps {
         //
-        withCredentials([sshUserPrivateKey(credentialsId: 'github-shinneng', keyFileVariable: 'SSH_KEY_ID')]) {
+        withCredentials([sshUserPrivateKey(credentialsId: 'github-proximax', keyFileVariable: 'SSH_KEY_ID')]) {
           // writeFile file: '/root/.ssh/id_ed25519', text: $SSH_KEY_FOR_SHINNENG'registry=https://nexus.internal.proximax.io/repository/npm-group/\n@scope:registry=https://nexus.internal.proximax.io/repository/npm-private/\nemail=jenkins@proximax.io\nalways-auth=true\n_auth=' + env.nexusAuth + '\n'
         // with docker image go:alpine
           withDockerContainer(image: 'go:1.12.6-alpine3.9', args: '-v ${SSH_KEY_ID}:/root/.ssh/id_rsa') {
