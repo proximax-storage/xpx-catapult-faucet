@@ -15,12 +15,17 @@ type ConfigData struct {
 	Server     Server     `json:"server"`
 	Logging    Logging    `json:"logging"`
 	BlackList  BlackList  `json:"blackList"`
+	WhiteList  WhiteList  `json:"whiteList"`
 	App        App        `json:"app"`
 }
 
 type BlackList struct {
 	ByIp      bool `json:"byIp"`
 	ByAddress bool `json:"byAddress"`
+}
+
+type WhiteList struct {
+	Addresses []string `json:"addresses"`
 }
 
 type Blockchain struct {

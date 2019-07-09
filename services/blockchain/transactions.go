@@ -13,6 +13,13 @@ import (
 )
 
 func TransferXpx(Address, ip string) error {
+	Address = strings.Replace(Address, "-", "", -1)
+
+	for _, x := range Faucet.Config.WhiteList.Addresses {
+		if Address == x {
+			return createTransfer(Address)
+		}
+	}
 
 	if Faucet.Config.BlackList.ByIp {
 		err := db.StoreClient(ip, "byIp")
