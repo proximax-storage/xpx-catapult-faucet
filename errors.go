@@ -10,10 +10,10 @@ type NotAuthorized error
 var (
 	AddressMissing         BadRequestError  = errors.New("address is missing")
 	AddressInvalid         BadRequestError  = errors.New("address is invalid")
-	AddressRegistered      BadRequestError  = errors.New("address is registered")
-	IpAddressRegistered    BadRequestError  = errors.New("ip address is registered")
+	AddressRegistered      BadRequestError  = errors.New("XPX can only be send once every 24 hours")
+	IpAddressRegistered    BadRequestError  = errors.New("XPX can only be send once every 24 hours")
 	RecordAlready          BadRequestError  = errors.New("record already exists")
-	MaximumQuantity        BadRequestError  = errors.New("the account has the maximum amount of XPX")
+	MaximumQuantity        BadRequestError  = errors.New("The account has the maximum amount of XPX")
 	Unauthenticated        NotAuthenticated = errors.New("not authenticated")
 	Unauthorized           NotAuthorized    = errors.New("not authorized")
 	DbError                ServerError      = errors.New("database error")

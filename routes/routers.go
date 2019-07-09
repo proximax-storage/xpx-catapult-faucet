@@ -56,11 +56,26 @@ var routes = Routes{
 		"GetXpx",
 		strings.ToUpper("Get"),
 		"/api/faucet/GetXpx/:address",
-		GetXpx,
+		getXpx,
+	},
+
+	Route{
+		"GetConfig",
+		strings.ToUpper("Get"),
+		"/api/faucet/config",
+		getConfig,
 	},
 }
 
-func GetXpx(ctx *gin.Context) {
+func getConfig(ctx *gin.Context) {
+	cg := Faucet.Config.App.MaxXpx
+
+	utils.Logger(0, "%v", "GetConfig successful!")
+
+	respOk(ctx, cg)
+}
+
+func getXpx(ctx *gin.Context) {
 	id, err := getAddressParam(ctx)
 	if err != nil {
 		utils.Logger(2, "%v", "GetXpx fail!")
