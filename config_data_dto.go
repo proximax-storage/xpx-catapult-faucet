@@ -1,7 +1,7 @@
 package Faucet
 
 import (
-	"github.com/proximax-storage/go-xpx-catapult-sdk/sdk"
+	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"strings"
 	"sync"
 )
@@ -15,12 +15,17 @@ type ConfigData struct {
 	Server     Server     `json:"server"`
 	Logging    Logging    `json:"logging"`
 	BlackList  BlackList  `json:"blackList"`
+	WhiteList  WhiteList  `json:"whiteList"`
 	App        App        `json:"app"`
 }
 
 type BlackList struct {
 	ByIp      bool `json:"byIp"`
 	ByAddress bool `json:"byAddress"`
+}
+
+type WhiteList struct {
+	Addresses []string `json:"addresses"`
 }
 
 type Blockchain struct {

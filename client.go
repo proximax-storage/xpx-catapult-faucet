@@ -1,8 +1,11 @@
 package Faucet
 
 import (
-	"github.com/proximax-storage/go-xpx-catapult-sdk/sdk"
+	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"github.com/proximax-storage/xpx-catapult-faucet/utils"
+	ws "github.com/proximax-storage/xpx-catapult-faucet/websocket"
+
+	"time"
 )
 
 var (
@@ -20,4 +23,8 @@ func InitClient() {
 	BlockchainClient = sdk.NewClient(nil, conf)
 
 	utils.Logger(0, "Initializing rest clients - completed")
+}
+
+func NewWebsocket() (*ws.ClientWebsocket, error) {
+	return ws.NewConnectWs(Config.Blockchain.ApiUrl, time.Second*60)
 }

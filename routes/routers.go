@@ -56,11 +56,26 @@ var routes = Routes{
 		"GetXpx",
 		strings.ToUpper("Get"),
 		"/api/faucet/GetXpx/:address",
-		GetXpx,
+		getXpx,
+	},
+
+	Route{
+		"GetConfig",
+		strings.ToUpper("Get"),
+		"/api/faucet/config",
+		getConfig,
 	},
 }
 
-func GetXpx(ctx *gin.Context) {
+func getConfig(ctx *gin.Context) {
+	cg := Faucet.Config.App.MaxXpx
+
+	utils.Logger(0, "%v", "GetConfig successful!")
+
+	respOk(ctx, cg)
+}
+
+func getXpx(ctx *gin.Context) {
 	id, err := getAddressParam(ctx)
 	if err != nil {
 		utils.Logger(2, "%v", "GetXpx fail!")
@@ -68,14 +83,14 @@ func GetXpx(ctx *gin.Context) {
 		return
 	}
 
-	err = blockchain.TransferXpx(*id)
+	err = blockchain.TransferXpx(*id, ctx.ClientIP())
 	if err != nil {
 		respError(ctx, err)
-		utils.Logger(2, "%v", "GetBranchInformation fail!")
+		utils.Logger(2, "%v", "GetXpx fail!")
 		return
 	} else {
-		utils.Logger(0, "%v", "GetBranchInformation complete!")
-		respOk(ctx, "Success")
+		utils.Logger(0, "%v", "GetXpx complete!")
+		respOk(ctx, "XPX sent!")
 	}
 }
 

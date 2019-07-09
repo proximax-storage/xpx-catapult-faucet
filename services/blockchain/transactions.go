@@ -3,7 +3,7 @@ package blockchain
 import (
 	"context"
 	"fmt"
-	"github.com/proximax-storage/go-xpx-catapult-sdk/sdk"
+	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"github.com/proximax-storage/xpx-catapult-faucet"
 	"github.com/proximax-storage/xpx-catapult-faucet/db"
 	"github.com/proximax-storage/xpx-catapult-faucet/utils"
@@ -12,10 +12,17 @@ import (
 	"time"
 )
 
-func TransferXpx(Address string) error {
+func TransferXpx(Address, ip string) error {
+	Address = strings.Replace(Address, "-", "", -1)
+
+	for _, x := range Faucet.Config.WhiteList.Addresses {
+		if Address == x {
+			return createTransfer(Address)
+		}
+	}
 
 	if Faucet.Config.BlackList.ByIp {
-		err := db.StoreClient(Address, "byIp")
+		err := db.StoreClient(ip, "byIp")
 		if err != nil {
 			return Faucet.IpAddressRegistered
 		}
@@ -31,13 +38,69 @@ func TransferXpx(Address string) error {
 }
 
 func AnnounceTxn(signedTxn *sdk.SignedTransaction) error {
+
+	address := Faucet.Config.FaucetAccount().Address
+
+	ws, err := Faucet.NewWebsocket()
+	if err != nil {
+		utils.Logger(3, "Failed to create websocket: %v", err)
+		return Faucet.WebsocketError
+	}
+	defer ws.Close()
+
+	// open websocket to wait for status to be validated, either it end up as unconfirmed or failed
+	// listen to either websocket
+	unconfirmed, err := ws.Subscribe.UnconfirmedAdded(address)
+	if err != nil {
+		utils.Logger(3, "Failed to open websocket for unconfirmed txn: %v", err)
+		return Faucet.WebsocketError
+	}
+	defer unconfirmed.Unsubscribe()
+
+	confirmed, err := ws.Subscribe.ConfirmedAdded(address)
+	if err != nil {
+		utils.Logger(3, "Failed to open websocket for confirmed txn: %v", err)
+		return Faucet.WebsocketError
+	}
+	defer confirmed.Unsubscribe()
+
+	status, err := ws.Subscribe.Status(address)
+	if err != nil {
+		utils.Logger(3, "Failed to open websocket for status: %v", err)
+		return Faucet.WebsocketError
+	}
+	defer status.Unsubscribe()
+
 	// announce transaction
 	utils.Logger(1, "Connecting to the node: %v", Faucet.Config.Blockchain.ApiUrl)
-	_, err := Faucet.BlockchainClient.Transaction.Announce(context.Background(), signedTxn)
+	_, err = Faucet.BlockchainClient.Transaction.Announce(context.Background(), signedTxn)
 	if err != nil {
 		utils.Logger(3, "Failed to announce status: %v", err)
 		return Faucet.BlockchainApiError
 	}
+
+	for {
+		select {
+		case data := <-unconfirmed.Ch:
+			if data.GetAbstractTransaction().Hash.String() == signedTxn.Hash.String() {
+				utils.Logger(0, "Transaction hash -> %v", data.GetAbstractTransaction().Hash)
+				return nil
+			}
+
+		case data := <-confirmed.Ch:
+			if data.GetAbstractTransaction().Hash.String() == signedTxn.Hash.String() {
+				utils.Logger(0, "Transaction hash -> %v", data.GetAbstractTransaction().Hash)
+				return nil
+			}
+
+		case data := <-status.Ch:
+			if data.Hash == signedTxn.Hash.String() {
+				//utils.Logger(2, "%v", data.Status)
+				return fmt.Errorf("%v", strings.Replace(strings.Split(data.Status, "Failure_Core_")[1], "_", " ", 1))
+			}
+		}
+	}
+
 	return nil
 }
 
