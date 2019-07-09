@@ -2,7 +2,7 @@
   "server": {
     "name": "Faucet-services",
     "description": "ProximaX Sirius Faucet",
-    "port": 8083,
+    "port": 8080,
     "host": "",
     "allowCrossDomain": false
   },
@@ -13,13 +13,21 @@
   "app": {
     "FaucetMasterAcctPrivateKey": "68f50e10e5b8be2b7e9ddb687a667d6e94dd55fe02b4aed8195f51f9a242558b",
     "namespace": "prx",
-    "maxXpx": 4,
+    "maxXpx": 1000000000,
     "mosaicId": "0DC67FBE1CAD29E3"
   },
   "blackList":{
     "byIp": true,
     "byAddress": true
   },
+  "whiteList":{
+    "addresses": [
+      "VCX6CKVDQJZ76GRHDP5WLZKLACRNYDCLPZG5CFR5",
+      "VAURUUY4PVDB2YBGOMXFCAADUPKQCHK3E2AHNHF6",
+      "VDYLUT4WDO36SEHBNINXKXJHYGG55EN43BDEOCTW"
+    ]
+  },
+
   "logging": {
     "console": {
       "colorize": true,
