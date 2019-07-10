@@ -20,13 +20,13 @@ export default {};
 
 <style lang="scss">
 body {
-  background-image: url("./assets/img/background-proximax.jpg");
+  // background-image: url("./assets/img/background-proximax.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   display: block;
   margin: 0px;
-  background-color: #f4f4f4;
-  font-family: "Lato", sans-serif;
+  background-color: #ffffff;
+  font-family: Open Sans; 
 }
 
 html {

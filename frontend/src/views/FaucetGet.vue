@@ -4,14 +4,14 @@
       <div class="card">
         <form id="fauceApp" @submit="sendFaucet" novalidate="true">
           <div class="container">
-            <img src="@/assets/img/logo-proximax-xpx-faucet.svg" alt="logo" style="width: 80%">
+            <img src="@/assets/img/logo-proximax-sirius-faucet.svg" alt="logo" style="width: 80%">
             <h2 class="text-color-title text-size-vm20 mt-2rem">
-              <b>SIRIUS BC TESTNET</b>
+              <b>SIRIUS CHAIN TESTNET</b>
             </h2>
             <p
               style="margin: 0;"
-              class="text-color text-size-vm16"
-            >Faucet Will only send if XPX is less than 100</p>
+              class="text-color-black text-size-vm16 text-center"
+            >Top-up your account balance to a maximum of {{xpxMax}} XPX every 24 hours</p>
           </div>
           <div class="input-class mt-2rem">
             <input
@@ -24,32 +24,14 @@
               @input="checkForm($event)"
             >
           </div>
-
           <div class="div-alert-war">
             <div v-show="showValidate" :class="alertclass">
               <div :class="div1">{{msjValidate}}</div>
               <div :class="div2">
                 <b style="margin-top: 5px;" :class="loaderclass"></b>
               </div>
-
-              <!-- <div>
-                {{msjValidate}}
-              </div>
-               <div >
-                 hola
-              </div>-->
-
-              <!-- <b
-                class="text-color text-size-vm16-margin"
-                style="margin-top: 0.51rem;"
-              ></b>
-              <b style="margin-top: 5px;" :class="loaderclass"></b>-->
             </div>
-            <!-- <div :class="alertclass">
-              <b style="margin-top: 5px;" :class="loaderclass"></b>
-            </div>-->
           </div>
-
           <div class="button-class">
             <button :disabled="isDisabled" type="submit" class="btn">Send</button>
           </div>
@@ -63,6 +45,8 @@ import Utils from "@/services/Utils.js";
 export default {
   data() {
     return {
+      xpxMax: 0,
+      cont: 0,
       alertclass: "",
       div1: "",
       div2: "",
@@ -74,7 +58,33 @@ export default {
       msjValidate: ""
     };
   },
+  created: function() {
+    this.getMaxXpx();
+  },
   methods: {
+    getMaxXpx: function() {
+
+     console.log( this.amountFormatterSimple(100000000))
+      this.cont = this.cont + 1;
+      console.log(this.cont)
+      this.$apiService
+        .get(`faucet/config`)
+        .then(response => {
+          this.xpxMax = this.amountFormatterSimple(response.data);
+        })
+        .catch(error => {
+          this.xpxMax = 0;
+          if (this.cont < 5) {
+            this.getMaxXpx();
+          }
+        });
+    },
+    amountFormatterSimple: function(amount) {
+      const amountDivisibility = Number(amount) / Math.pow(10, 6);
+      return amountDivisibility.toLocaleString("en-us", {
+        minimumFractionDigits: 0
+      });
+    },
     checkForm: function(e) {
       this.loaderclass = "";
       // address test  VARC5G-OWFIWG-7JK7JV-Y7DXIS-TQYOID-75ON3G-O22H
@@ -173,6 +183,12 @@ h2 {
 .text-color-title {
   // font-size: 30px;
   color: #0a8e9b;
+}
+.text-color-black {
+  color: #000000;
+}
+.text-center {
+  text-align: center;
 }
 .fauce-card {
   display: flex;
