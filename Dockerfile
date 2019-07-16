@@ -1,4 +1,4 @@
-FROM golang:1.12.6-alpine3.9
+FROM scratch
 
 WORKDIR /faucet
 # copy required files
