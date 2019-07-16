@@ -47,6 +47,11 @@ func StoreClient(address, t string) error {
 	return nil
 }
 
+func DeleteBlackList(address, ip string) {
+	delete(listByIP, ip)
+	delete(listByAddress, address)
+}
+
 func CheckBlackList(value string, t string) bool {
 	if t == "byAddress" {
 		d, v := listByAddress[value]

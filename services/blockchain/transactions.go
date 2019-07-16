@@ -27,6 +27,7 @@ func TransferXpx(Address, ip string) error {
 			return Faucet.IpAddressRegistered
 		}
 	}
+
 	if Faucet.Config.BlackList.ByAddress {
 		err := db.StoreClient(Address, "byAddress")
 		if err != nil {
@@ -34,10 +35,15 @@ func TransferXpx(Address, ip string) error {
 		}
 	}
 
-	return createTransfer(Address)
+	if err := createTransfer(Address); err != nil {
+		db.DeleteBlackList(Address, ip)
+		return err
+	}
+
+	return nil
 }
 
-func AnnounceTxn(signedTxn *sdk.SignedTransaction) error {
+func announceTxn(signedTxn *sdk.SignedTransaction) error {
 
 	address := Faucet.Config.FaucetAccount().Address
 
@@ -143,7 +149,7 @@ func createTransfer(Address string) error {
 		return fmt.Errorf("TransaferTransaction signing returned error: %s", err)
 	}
 
-	err = AnnounceTxn(signedTxn)
+	err = announceTxn(signedTxn)
 	if err != nil {
 		return err
 	}

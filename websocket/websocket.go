@@ -239,14 +239,16 @@ func (c *ClientWebsocket) wsConnect() error {
 		timeout = time.After(*c.duration * time.Millisecond)
 	}
 
-	tick := time.Tick(time.Millisecond)
+	ticker := time.NewTicker(time.Millisecond)
+
+	defer ticker.Stop()
 
 	for {
 		select {
 		case <-timeout:
 			return fmt.Errorf("timed out")
 
-		case <-tick:
+		case <-ticker.C:
 			conn, err := websocket.Dial(c.config.BaseURLs[0].String(), "", "http://localhost")
 
 			if err != nil {
