@@ -1,42 +1,51 @@
 <template>
-  <div class="fauce-card">
-    <div class="container-column">
-      <div class="card">
-        <form id="fauceApp" @submit="sendFaucet" novalidate="true">
-          <div class="container">
-            <img src="@/assets/img/logo-proximax-sirius-faucet.svg" alt="logo" style="width: 80%">
-            <h2 class="text-color-title text-size-vm20 mt-2rem">
-              <b>SIRIUS CHAIN TESTNET</b>
-            </h2>
-            <p
-              style="margin: 0;"
-              class="text-color-black text-size-vm16 text-center"
-            >Top-up your account balance to a maximum of {{xpxMax}} XPX every 24 hours</p>
-          </div>
-          <div class="input-class mt-2rem">
+  <div class="fauce-container">
+    <div class="container-fluid">
+      <br>
+      <h2 class="text-color-title text-size-30 text-center mt-1rem">
+        <b>Sirius-chain testnet</b>
+      </h2>
+      <p
+        class="text-color-black text-size-20 text-center"
+      >Top-up your account balance to a maximum of {{xpxMax}} test-XPX every 24 hours.</p>
+      <hr>
+      <form id="fauceApp" @submit="sendFaucet" novalidate="true">
+        <div class="container mt-1rem">
+          <div class="input-icon-wrap">
+            <span class="input-icon">
+              <span class="fa fa-user">
+                <img
+                  class="icon-wallet"
+                  src="@/assets/img/icon-wallet-name-red-16h-proximax-sirius-faucet.svg"
+                >
+              </span>
+            </span>
             <input
+              class="input-with-icon"
+              id="form-name"
               maxlength="46"
               v-bind:class="[classValdiate]"
               style="width: 100%;"
               type="text"
               v-model="address"
-              placeholder="Enter your XPX address here..."
+              placeholder="Enter your testnet address here..."
               @input="checkForm($event)"
             >
           </div>
+
           <div class="div-alert-war">
             <div v-show="showValidate" :class="alertclass">
               <div :class="div1">{{msjValidate}}</div>
               <div :class="div2">
-                <b style="margin-top: 5px;" :class="loaderclass"></b>
+                <b :class="loaderclass"></b>
               </div>
             </div>
           </div>
-          <div class="button-class">
-            <button :disabled="isDisabled" type="submit" class="btn">Send</button>
+          <div class="button-class mt-1rem">
+            <button :disabled="isDisabled" type="submit" class="btn">SEND</button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -63,10 +72,9 @@ export default {
   },
   methods: {
     getMaxXpx: function() {
-
-     console.log( this.amountFormatterSimple(100000000))
+      console.log(this.amountFormatterSimple(100000000));
       this.cont = this.cont + 1;
-      console.log(this.cont)
+      console.log(this.cont);
       this.$apiService
         .get(`faucet/config`)
         .then(response => {
@@ -84,7 +92,7 @@ export default {
       return amountDivisibility.toLocaleString("en-us", {
         minimumFractionDigits: 0
       });
-    },
+    },   
     checkForm: function(e) {
       this.loaderclass = "";
       // address test  VARC5G-OWFIWG-7JK7JV-Y7DXIS-TQYOID-75ON3G-O22H
@@ -93,7 +101,7 @@ export default {
         this.showValidate = false;
         this.msjValidate = "";
         this.classValdiate = "success";
-      } else {
+      } else {  
         this.showValidate = true;
         this.msjValidate = "Address must have 40 characters";
         this.isB = true;
@@ -120,7 +128,7 @@ export default {
             this.buttonValidate = true;
             this.address = "";
             this.loaderclass = "";
-            this.div1 = "div-alert-text";
+            this.div1 = "div-afauce-cardlert-text";
             this.div2 = "";
             this.alertclass = "alert-success";
             this.showValidate = true;
@@ -165,115 +173,177 @@ export default {
 </script>
 
 <style lang="scss">
+//########## containers class##########
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.fauce-container {
+  display: flex;
+  overflow: auto;
+  flex-flow: row wrap;
+  flex-direction: column;
+  justify-content: center;
+  margin: 15px 2px 50px 2px;
+  align-items: center;
+}
+.container-fluid {
+  padding-top: 2rem;
+  margin: 1rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+
+//########## inputs class##########
+.input-icon-wrap {
+  width: 50%;
+  border-radius: 20px;
+  border: 1px solid silver;
+  display: flex;
+  flex-flow: row wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 13px;
+}
+.input-with-icon {
+  // font-size: 18px;
+  border: none;
+  text-align: center;
+  flex: 1;
+}
+.input-icon,
+.input-with-icon {
+  padding: 2px;
+  border-radius: 20px;
+}
+.icon-wallet {
+  width: 1.5rem;
+}
+
+//########## text class##########
+.div-alert-text {
+  width: 100%;
+  text-align: center;
+}
+.div-loader-text {
+  width: 80%;
+  text-align: center;
+}
+.text-color-title {
+  //
+    font-weight: bold;
+  color: #df4c48;
+}
+.text-color-black {
+   font-weight: bold;
+  color: #000000;
+}
+.text-center {
+  text-align: center;
+}
+.text-size-30{
+ font-size: 30px;
+}
+.text-size-20{
+ font-size: 20px;
+}
+.text-size-18{
+ font-size: 18px;
+}
+//########## tasks class##########
+input:focus,
+textarea:focus,
+select:focus {
+  outline-offset: none !important;
+  outline: none !important;
+}
+
 h2 {
   margin-bottom: 0.4rem;
 }
+form {
+  width: 100%;
+}
+hr {
+  border: 1px Solid silver;
+  width: 100%;
+}
+
+//########## margin and padding class##########
 .mt-1rem {
   margin-top: 1rem;
 }
 .mt-2rem {
   margin-top: 2rem;
 }
-.text-size-vm26 {
-  font-size: 26px;
-}
-.text-size-vm40 {
-  font-size: 40px;
-}
-.text-color-title {
-  // font-size: 30px;
-  color: #0a8e9b;
-}
-.text-color-black {
-  color: #000000;
-}
-.text-center {
-  text-align: center;
-}
-.fauce-card {
-  display: flex;
-  overflow: auto;
-  flex-flow: row wrap;
-  justify-content: center;
-  position: fixed;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-.input-class {
-  padding: 1px 43px 18px 0px;
-  background-color: #ffffff;
-  height: 3rem;
-  border-radius: 6px; /* 6px rounded corners */
-}
-.card {
-  margin: 1rem 1rem 1rem 1rem;
-  height: 27rem;
-  width: 519px;
-}
-.container {
-  display: flex;
-  flex-direction: column;
-  padding: 2px 16px;
-  align-items: center;
-}
+
+//##########  alerts class##########
 .div-alert-war {
+  width: 50%;
   margin: 0.5rem 0rem 0rem 0rem;
   height: 2rem;
-  flex-direction: row;
-  display: flex;
+   font-size: 18px;
+  flex-direction: column;
+   display: block;
 }
 .alert-war {
   padding: 2px 2px;
-  display: flex;
+   display: block;
   width: 100%;
-  background-color: #f4a400;
-  border-radius: 6px; /* 6px rounded corners */
-  color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #f4a400;
+  color: #000000;
+  
 }
-
 .alert-success {
   padding: 2px 2px;
-  display: flex;
+   display: block;
   width: 100%;
-  background-color: #1eb3aa;
-  border-radius: 6px; /* 6px rounded corners */
-  color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #1eb3aa;
+  color: #000000;
 }
 .alert-error {
   padding: 2px 2px;
-  display: flex;
+   display: block;
   width: 100%;
-  background-color: #ee6723;
-  border-radius: 6px; /* 6px rounded corners */
-  color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #ee6723;
+  color: #000000;
 }
-.container-column {
-  flex-direction: column;
-}
-.button-class {
-  display: flex;
-  flex-direction: column;
 
-  align-items: center;
-}
+//##########  button class##########
 button:disabled,
 button[disabled] {
   border: 1px solid #999999;
   background-color: #cccccc;
   color: #666666;
 }
-
+button {
+  outline: none;
+}
+button::-moz-focus-inner {
+  border: 0;
+}
+.button-class {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .btn:hover {
   opacity: 1;
   -webkit-transform: scale(1, 1);
   transform: scale(1, 1);
-  background-color: #1eb3aa;
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
+  background-color: rgb(228, 90, 85);
+  box-shadow: 0 1px 16px 0 rgba(0, 0, 0, 0.4);
 }
 .btn:after {
   content: "";
-  background: #0a8e9b;
+  background: #df4c48;
   display: block;
   position: absolute;
   padding-top: 300%;
@@ -283,9 +353,6 @@ button[disabled] {
   opacity: 0;
   transition: all 0.8s;
 }
-button {
-  outline: none;
-}
 .btn:active:after {
   padding: 0;
   margin: 0;
@@ -293,15 +360,18 @@ button {
   transition: 0s;
 }
 .btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border-radius: 22px;
   position: relative;
-  background-color: #0a8e9b;
+  background-color: #df4c48;
   border: none;
   margin-top: 15px;
-  font-size: 25px;
+  font-size: 18px;
   color: #ffffff;
   padding: 12px;
-  width: 280px;
+  width: 180px;
   text-align: center;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
@@ -311,40 +381,6 @@ button {
   cursor: pointer;
   outline: none;
 }
-button::-moz-focus-inner {
-  border: 0;
-}
-mb-2rem {
-  margin-bottom: 2rem;
-}
-input {
-  margin: 25px 25px;
-  width: 200px;
-  display: block;
-  text-align: center;
-  border: none;
-  color: #000000;
-  font-size: 15px;
-  border-bottom: 1px Solid #999999;
-  background: -webkit-linear-gradient(
-    top,
-    rgba(255, 255, 255, 0) 100%,
-    white 4%
-  );
-  font-weight: bold;
-}
-
-input:focus,
-input:valid {
-  box-shadow: none;
-  outline: none;
-  background-position: 0 0;
-}
-input:focus {
-  font-size: 15px;
-  visibility: visible !important;
-}
-
 .loader {
   border: 4px solid #f3f3f3;
   border-radius: 50%;
@@ -373,16 +409,6 @@ input:focus {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.div-alert-text {
-  width: 100%;
-  text-align: center;
-}
-
-.div-loader-text {
-  width: 80%;
-  text-align: center;
 }
 .div-loader-animate {
   width: 15%;
