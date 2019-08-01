@@ -32,12 +32,11 @@
               @input="checkForm($event)"
             >
           </div>
-
           <div class="div-alert-war">
             <div v-show="showValidate" :class="alertclass">
               <div :class="div1">{{msjValidate}}</div>
               <div :class="div2">
-                <b :class="loaderclass"></b>
+                <div :class="loaderclass"></div>
               </div>
             </div>
           </div>
@@ -72,9 +71,7 @@ export default {
   },
   methods: {
     getMaxXpx: function() {
-      console.log(this.amountFormatterSimple(100000000));
       this.cont = this.cont + 1;
-      console.log(this.cont);
       this.$apiService
         .get(`faucet/config`)
         .then(response => {
@@ -92,7 +89,7 @@ export default {
       return amountDivisibility.toLocaleString("en-us", {
         minimumFractionDigits: 0
       });
-    },   
+    },
     checkForm: function(e) {
       this.loaderclass = "";
       // address test  VARC5G-OWFIWG-7JK7JV-Y7DXIS-TQYOID-75ON3G-O22H
@@ -101,7 +98,7 @@ export default {
         this.showValidate = false;
         this.msjValidate = "";
         this.classValdiate = "success";
-      } else {  
+      } else {
         this.showValidate = true;
         this.msjValidate = "Address must have 40 characters";
         this.isB = true;
@@ -232,27 +229,33 @@ export default {
 .div-loader-text {
   width: 80%;
   text-align: center;
+  float: left;
+}
+.div-loader-animate {
+  width: 15%;
+  float: left;
+  text-align: right;
 }
 .text-color-title {
   //
-    font-weight: bold;
+  font-weight: bold;
   color: #df4c48;
 }
 .text-color-black {
-   font-weight: bold;
+  font-weight: bold;
   color: #000000;
 }
 .text-center {
   text-align: center;
 }
-.text-size-30{
- font-size: 30px;
+.text-size-30 {
+  font-size: 30px;
 }
-.text-size-20{
- font-size: 20px;
+.text-size-20 {
+  font-size: 20px;
 }
-.text-size-18{
- font-size: 18px;
+.text-size-18 {
+  font-size: 18px;
 }
 //########## tasks class##########
 input:focus,
@@ -261,7 +264,6 @@ select:focus {
   outline-offset: none !important;
   outline: none !important;
 }
-
 h2 {
   margin-bottom: 0.4rem;
 }
@@ -286,22 +288,19 @@ hr {
   width: 50%;
   margin: 0.5rem 0rem 0rem 0rem;
   height: 2rem;
-   font-size: 18px;
-  flex-direction: column;
-   display: block;
+  font-size: 18px;
 }
 .alert-war {
   padding: 2px 2px;
-   display: block;
+  display: flex;
   width: 100%;
   border-radius: 10px;
   border: 1px solid #f4a400;
   color: #000000;
-  
 }
 .alert-success {
   padding: 2px 2px;
-   display: block;
+  display: flex;
   width: 100%;
   border-radius: 10px;
   border: 1px solid #1eb3aa;
@@ -309,7 +308,7 @@ hr {
 }
 .alert-error {
   padding: 2px 2px;
-   display: block;
+  display: flex;
   width: 100%;
   border-radius: 10px;
   border: 1px solid #ee6723;
@@ -382,12 +381,14 @@ button::-moz-focus-inner {
   outline: none;
 }
 .loader {
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 5px;
   border: 4px solid #f3f3f3;
   border-radius: 50%;
   border-top: 4px solid #f4a400;
   width: 8px;
   height: 8px;
-  position: fixed;
   -webkit-animation: spin 2s linear infinite; /* Safari chrome */
   -moz-animation: spin 2s linear infinite; /* firefox */
   -o-animation: spin 2s linear infinite; /* opera */
@@ -409,10 +410,6 @@ button::-moz-focus-inner {
   100% {
     transform: rotate(360deg);
   }
-}
-.div-loader-animate {
-  width: 15%;
-  text-align: right;
 }
 </style>
 

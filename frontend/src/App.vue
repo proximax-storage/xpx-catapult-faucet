@@ -4,12 +4,14 @@
       <img src="@/assets/img/background-proximax.jpg"  style="width: 100%; height: 300px;">
     </div>-->
     <div class="header">
-      <img class="logo responsive" src="@/assets/img/logo-proximax-sirius-faucet_new.svg">
+
+      <div class="logo"> <img class=" responsive" src="@/assets/img/logo-proximax-sirius-faucet_new.svg"> {{version}}</img> </div>
+      
     </div>
     <main>
       <router-view/>
       <footer>
-        <p class="copyright">© ProximaX 2019. All Rights Reserved. <b> Sirius Faucet v0.0.2</b> </p>
+        <p class="copyright">© ProximaX 2019. All Rights Reserved. <b> Sirius Faucet {{version}}</b> </p>
       </footer>
     </main>
 
@@ -18,7 +20,12 @@
 </template>
 
 <script>
-export default {};
+export default {
+
+  data() { return {
+    version: "v0.0.3"
+    }}
+};
 </script>
 
 <style lang="scss">
@@ -30,6 +37,7 @@ export default {};
   float: none;
   display: block;
   text-align: left;
+  font-size: 20px;
 
 }
 .responsive{
@@ -38,13 +46,25 @@ export default {};
 
 @media screen and ( max-width: 1024px ) {
 img.responsive { width: 200px; }
+.logo {
+   font-size: 15px;
+}
 }
 
 @media screen and ( max-width: 800px ) {
-img.responsive { width: 170px; }
+img.responsive { width: 170px;
+ }
+ .logo {
+   font-size: 14px;
+}
 }
 @media screen and ( max-width: 500px ) {
-img.responsive { width: 150px; }
+img.responsive { width: 150px;
+ .logo {
+   font-size: 8px;
+}
+
+ }
 }
 @media screen and ( min-width: 1025px) {
 img.responsive { width: 300px;}
@@ -58,7 +78,7 @@ body {
   margin: 0px;
   flex-direction: column;
   background-color: #ffffff;
-  font-family: Open Sans;
+ font-family: 'Lato', sans-serif;
 }
 
 html {
