@@ -37,7 +37,7 @@ export default {
   float: none;
   display: block;
   text-align: left;
-  font-size: 20px;
+  font-size: 15px;
 
 }
 .responsive{
@@ -47,7 +47,7 @@ export default {
 @media screen and ( max-width: 1024px ) {
 img.responsive { width: 200px; }
 .logo {
-   font-size: 15px;
+   font-size: 10px;
 }
 }
 
@@ -55,13 +55,13 @@ img.responsive { width: 200px; }
 img.responsive { width: 170px;
  }
  .logo {
-   font-size: 14px;
+   font-size: 10px;
 }
 }
 @media screen and ( max-width: 500px ) {
 img.responsive { width: 150px;
  .logo {
-   font-size: 8px;
+   font-size: 10px;
 }
 
  }
