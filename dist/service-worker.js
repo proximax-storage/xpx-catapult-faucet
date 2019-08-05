@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.5896bec21e23054cec91657fc82a82ba.js"
+  "/precache-manifest.29c36c97e5082fe5900963b13183f161.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "bc-testnet-faucet"});
