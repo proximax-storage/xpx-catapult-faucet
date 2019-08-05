@@ -7,7 +7,7 @@
     "allowCrossDomain": false
   },
   "blockchain": {
-    "apiUrl": "http://bctestnet1.xpxsirius.io:300",
+    "apiUrl": "http://bctestnet1.xpxsirius.io:3000",
     "network": "publicTest"
   },
   "app": {
