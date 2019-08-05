@@ -1,4 +1,4 @@
-FROM scratch
+FROM golang:1.12.7-stretch
 
 WORKDIR /faucet
 # copy required files
