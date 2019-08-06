@@ -16,28 +16,6 @@ pipeline {
     }
 
   stages {
-    stage('Build') {
-      steps {
-        //
-        withCredentials([sshUserPrivateKey(credentialsId: 'github-proximax', keyFileVariable: 'SSH_KEY_ID')]) {
-          // writeFile file: '/root/.ssh/id_ed25519', text: $SSH_KEY_FOR_SHINNENG'registry=https://nexus.internal.proximax.io/repository/npm-group/\n@scope:registry=https://nexus.internal.proximax.io/repository/npm-private/\nemail=jenkins@proximax.io\nalways-auth=true\n_auth=' + env.nexusAuth + '\n'
-        // with docker image go:alpine
-          withDockerContainer(image: 'golang:1.12.7-stretch', args: '-u root -v ${SSH_KEY_ID}:/root/.ssh/id_rsa') {
-            sh '''
-            apk update && apk upgrade && apk add --no-cache bash git openssh
-            git config --global url.ssh://git@github.com/.insteadOf https://github.com/
-            echo "StrictHostKeyChecking no" > /root/.ssh/config
-            chmod 400 /root/.ssh/id_rsa
-            go get -d
-            go get github.com/gin-contrib/gzip
-            cd cmd
-            CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' -o server.run
-            '''
-          }
-        }
-      }
-    }
-
     stage('Build and Publish Release Image'){
       steps {
         echo 'Build and Publish Image'

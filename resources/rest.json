@@ -2,8 +2,8 @@
   "server": {
     "name": "Faucet-services",
     "description": "ProximaX Sirius Faucet",
-    "port": 8080,
-    "host": "",
+    "port": 8083,
+    "host": "localhost",
     "allowCrossDomain": false
   },
   "blockchain": {
@@ -11,7 +11,7 @@
     "network": "publicTest"
   },
   "app": {
-    "FaucetMasterAcctPrivateKey": "68f50e10e5b8be2b7e9ddb687a667d6e94dd55fe02b4aed8195f51f9a242558b",
+    "FaucetMasterAcctPrivateKey": "88A73400A727AD0F7CA1B63AA6AD10861B326D050EB2627AC9C5A6151E3A03B1",
     "namespace": "prx",
     "maxXpx": 1000000000,
     "mosaicId": "0DC67FBE1CAD29E3"
