@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <br>
       <h2 class="text-color-title text-size-30 text-center mt-1rem">
-        <b>Sirius-Chain Testnet</b>
+        <b>Sirius Chain Testnet</b>
       </h2>
       <p
         class="text-color-black text-size-20 text-center"
