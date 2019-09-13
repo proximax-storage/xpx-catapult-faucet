@@ -45,9 +45,13 @@ func main() {
 	s, _ := utils.Marshal(config)
 	fmt.Println(string(s))
 
-	Faucet.InitClient()
+	if err := Faucet.InitClient(); err != nil {
+		panic(err)
+	}
 
-	db.Init()
+	if err := db.InitDB(config.DbStorage.Dir); err != nil {
+		panic(err)
+	}
 
 	go utils.Counter(config.Logging.ErrCtrl.MaxNumErr)
 
