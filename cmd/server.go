@@ -45,7 +45,9 @@ func main() {
 	s, _ := utils.Marshal(config)
 	fmt.Println(string(s))
 
-	Faucet.InitClient()
+	if err := Faucet.InitClient(); err != nil {
+		panic(err)
+	}
 
 	if err := db.InitDB(config.DbStorage.Dir); err != nil {
 		panic(err)
