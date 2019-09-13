@@ -13,7 +13,7 @@
   "app": {
     "FaucetMasterAcctPrivateKey": "88A73400A727AD0F7CA1B63AA6AD10861B326D050EB2627AC9C5A6151E3A03B1",
     "namespace": "prx",
-    "maxXpx": 1000000000,
+    "maxXpx": 10000000000,
     "mosaicId": "3C0F3DE5298CED2D"
   },
   "blackList":{
