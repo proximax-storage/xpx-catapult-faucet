@@ -47,7 +47,9 @@ func main() {
 
 	Faucet.InitClient()
 
-	db.Init()
+	if err := db.InitDB(config.DbStorage.Dir); err != nil {
+		panic(err)
+	}
 
 	go utils.Counter(config.Logging.ErrCtrl.MaxNumErr)
 

@@ -7,18 +7,23 @@
     "allowCrossDomain": false
   },
   "blockchain": {
-    "apiUrl": "http://bctestnet1.xpxsirius.io:3000",
+    "apiUrl": "http://bctestnet4.xpxsirius.io:3000",
     "network": "publicTest"
   },
   "app": {
     "FaucetMasterAcctPrivateKey": "88A73400A727AD0F7CA1B63AA6AD10861B326D050EB2627AC9C5A6151E3A03B1",
     "namespace": "prx",
     "maxXpx": 1000000000,
-    "mosaicId": "0DC67FBE1CAD29E3"
+    "mosaicId": "3C0F3DE5298CED2D"
   },
   "blackList":{
     "byIp": true,
     "byAddress": true
+  },
+  "db": {
+    "dir": "/tmp/swap",
+    "discardRatio": 0.5,
+    "gcInterval": 10
   },
   "whiteList":{
     "addresses": [

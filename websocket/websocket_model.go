@@ -72,29 +72,36 @@ type PartialRemovedInfo struct {
 }
 
 func (dto *blockInfoDTO) toStruct() (*sdk.BlockInfo, error) {
-	nt := sdk.ExtractNetworkType(dto.Block.Version)
+	nt := sdk.ExtractNetworkType(int64(dto.Block.Version))
 
 	pa, err := sdk.NewAccountFromPublicKey(dto.Block.Signer, nt)
 	if err != nil {
 		return nil, err
 	}
 
-	v := sdk.ExtractVersion(dto.Block.Version)
+	v := sdk.ExtractVersion(int64(dto.Block.Version))
+
+	generationHash, _ := sdk.StringToHash(dto.BlockMeta.GenerationHash)
+
+	signature, _ := sdk.StringToSignature(dto.Block.Signature)
+
+	previousBlockHash, _ := sdk.StringToHash(dto.Block.PreviousBlockHash)
+
+	blockTransactionsHash, _ := sdk.StringToHash(dto.Block.BlockTransactionsHash)
 
 	return &sdk.BlockInfo{
 		NetworkType:           nt,
-		Hash:                  dto.BlockMeta.Hash,
-		GenerationHash:        dto.BlockMeta.GenerationHash,
-		TotalFee:              Uint64Dto(dto.BlockMeta.TotalFee).ToBigInt(),
+		GenerationHash:        generationHash,
+		TotalFee:              sdk.Amount(dto.BlockMeta.TotalFee.ToBigInt().Int64()),
 		NumTransactions:       dto.BlockMeta.NumTransactions,
-		Signature:             dto.Block.Signature,
+		Signature:             signature,
 		Signer:                pa,
 		Version:               v,
 		Type:                  dto.Block.Type,
-		Height:                Uint64Dto(dto.Block.Height).ToBigInt(),
-		Timestamp:             Uint64Dto(dto.Block.Timestamp).ToBigInt(),
-		Difficulty:            Uint64Dto(dto.Block.Difficulty).ToBigInt(),
-		PreviousBlockHash:     dto.Block.PreviousBlockHash,
-		BlockTransactionsHash: dto.Block.BlockTransactionsHash,
+		Height:                sdk.Height(dto.Block.Height.ToBigInt().Int64()),
+		Timestamp:             sdk.NewTimestamp(dto.Block.Timestamp.ToBigInt().Int64()),
+		Difficulty:            sdk.Difficulty(dto.Block.Difficulty.ToBigInt().Int64()),
+		PreviousBlockHash:     previousBlockHash,
+		BlockTransactionsHash: blockTransactionsHash,
 	}, nil
 }

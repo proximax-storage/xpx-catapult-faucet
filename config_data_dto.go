@@ -4,6 +4,7 @@ import (
 	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"strings"
 	"sync"
+	"time"
 )
 
 var (
@@ -17,6 +18,13 @@ type ConfigData struct {
 	BlackList  BlackList  `json:"blackList"`
 	WhiteList  WhiteList  `json:"whiteList"`
 	App        App        `json:"app"`
+	DbStorage  DbStorage  `json:"db"`
+}
+
+type DbStorage struct {
+	Dir          string        `json:"dir"`
+	DiscardRatio float64       `json:"discardRatio"`
+	GcInterval   time.Duration `json:"gcInterval"`
 }
 
 type BlackList struct {
@@ -60,10 +68,10 @@ type Logging struct {
 }
 
 type App struct {
-	FaucetMasterAcctPrivateKey string `json:"FaucetMasterAcctPrivateKey"`
-	Namespace                  string `json:"namespace"`
-	MaxXpx                     int64  `json:"maxXpx"`
-	MosaicId                   string `json:"mosaicId"`
+	FaucetMasterAcctPrivateKey string     `json:"FaucetMasterAcctPrivateKey"`
+	Namespace                  string     `json:"namespace"`
+	MaxXpx                     sdk.Amount `json:"maxXpx"`
+	MosaicId                   string     `json:"mosaicId"`
 }
 
 var FaucetAccount *sdk.Account
@@ -72,7 +80,7 @@ func (c *ConfigData) FaucetAccount() *sdk.Account {
 	if FaucetAccount != nil {
 		return FaucetAccount
 	} else {
-		FaucetAccount, err := sdk.NewAccountFromPrivateKey(strings.ToUpper(c.App.FaucetMasterAcctPrivateKey), c.NetworkType())
+		FaucetAccount, err := BlockchainClient.NewAccountFromPrivateKey(strings.ToUpper(c.App.FaucetMasterAcctPrivateKey))
 		if err != nil {
 			panic(err)
 		}

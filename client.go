@@ -1,6 +1,7 @@
 package Faucet
 
 import (
+	"context"
 	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	ws "github.com/proximax-storage/xpx-catapult-faucet/websocket"
@@ -8,21 +9,20 @@ import (
 	"time"
 )
 
-var (
-	BlockchainClient *sdk.Client
-)
+var BlockchainClient = new(sdk.Client)
 
-func InitClient() {
-	utils.Logger(0, "Initializing rest clients")
-
-	conf, err := sdk.NewConfig([]string{Config.Blockchain.ApiUrl}, Config.NetworkType(), 0)
+func InitClient() error {
+	utils.Logger(0, "initializing sirius client")
+	conf, err := sdk.NewConfig(context.Background(), []string{Config.Blockchain.ApiUrl})
 	if err != nil {
-		panic(err)
+		return err
 	}
 
+	// Use the default http client
 	BlockchainClient = sdk.NewClient(nil, conf)
+	utils.Logger(0, "initialized sirius client - completed")
 
-	utils.Logger(0, "Initializing rest clients - completed")
+	return nil
 }
 
 func NewWebsocket() (*ws.ClientWebsocket, error) {
