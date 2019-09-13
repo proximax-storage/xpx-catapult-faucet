@@ -5,7 +5,7 @@
     </div>-->
     <div class="header">
 
-      <div class="logo"> <img class=" responsive" src="@/assets/img/logo-proximax-sirius-faucet_new.svg"> {{version}}</img> </div>
+      <div class="logo"> <img class=" responsive" src="@/assets/img/logo-proximax-sirius-faucet_new.svg"> {{version}} </img> </div>
       
     </div>
     <main>
@@ -23,7 +23,7 @@
 export default {
 
   data() { return {
-    version: "v0.0.3"
+    version: "v0.0.5"
     }}
 };
 </script>

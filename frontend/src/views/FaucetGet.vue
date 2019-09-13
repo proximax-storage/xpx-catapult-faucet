@@ -3,13 +3,13 @@
     <div class="container-fluid">
       <br>
       <h2 class="text-color-title text-size-30 text-center mt-1rem">
-        <b>Sirius-chain testnet</b>
+        <b>Sirius-Chain Testnet</b>
       </h2>
       <p
         class="text-color-black text-size-20 text-center"
       >Top-up your account balance to a maximum of {{xpxMax}} test-XPX every 24 hours.</p>
       <hr>
-      <form id="fauceApp" @submit="sendFaucet" novalidate="true">
+      <form id="fauceApp" v-on:submit.prevent="sendFaucet">
         <div class="container mt-1rem">
           <div class="input-icon-wrap">
             <span class="input-icon">
@@ -92,7 +92,6 @@ export default {
     },
     checkForm: function(e) {
       this.loaderclass = "";
-      // address test  VARC5G-OWFIWG-7JK7JV-Y7DXIS-TQYOID-75ON3G-O22H
       this.address = Utils.addressForm(this.address);
       if (Utils.isValid(this.address)) {
         this.showValidate = false;
@@ -125,7 +124,7 @@ export default {
             this.buttonValidate = true;
             this.address = "";
             this.loaderclass = "";
-            this.div1 = "div-afauce-cardlert-text";
+            this.div1 = "div-loader-text";
             this.div2 = "";
             this.alertclass = "alert-success";
             this.showValidate = true;
@@ -207,14 +206,14 @@ export default {
   padding: 13px;
 }
 .input-with-icon {
-  // font-size: 18px;
+  font-size: 18px;
   border: none;
   text-align: center;
   flex: 1;
 }
 .input-icon,
 .input-with-icon {
-  padding: 2px;
+  padding: 5px;
   border-radius: 20px;
 }
 .icon-wallet {
@@ -227,12 +226,11 @@ export default {
   text-align: center;
 }
 .div-loader-text {
-  width: 80%;
+  width: 100%;
   text-align: center;
   float: left;
 }
 .div-loader-animate {
-  width: 15%;
   float: left;
   text-align: right;
 }
@@ -382,9 +380,9 @@ button::-moz-focus-inner {
 }
 .loader {
   margin-right: auto;
-  margin-left: auto;
+  margin-left: -25px;
   margin-top: 5px;
-  border: 4px solid #f3f3f3;
+  border: 3px solid #f3f3f3;
   border-radius: 50%;
   border-top: 4px solid #f4a400;
   width: 8px;
@@ -410,6 +408,63 @@ button::-moz-focus-inner {
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+@media screen and (max-width: 900px) {
+  .input-icon-wrap {
+    width: 80%;
+  }
+  .div-alert-war {
+    width: 80%;
+  }
+}
+@media screen and (max-width: 650px) {
+  .input-icon-wrap {
+    width: 100%;
+  }
+  .div-alert-war {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 500px) {
+  // .btn {
+  //   margin-top: 35px;
+  // }
+  .input-icon-wrap {
+    width: 90%;
+  }
+  .div-alert-war {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 400px) {
+  // .btn {
+  //   margin-top: 35px;
+  // }
+  .input-icon-wrap {
+    width: 100%;
+  }
+   .div-alert-war {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 300px) {
+  .btn {
+    margin-top: 35px;
+  }
+}
+@media screen and (max-width: 250px) {
+  .btn {
+    margin-top: 40px;
+  }
+
+  @media screen and (max-width: 200px) {
+    .btn {
+      margin-top: 110px;
+    }
+  }
+  //
 }
 </style>
 
