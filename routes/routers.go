@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
+	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"github.com/proximax-storage/xpx-catapult-faucet"
 	"github.com/proximax-storage/xpx-catapult-faucet/services/blockchain"
 	"github.com/proximax-storage/xpx-catapult-faucet/utils"
@@ -55,7 +56,7 @@ var routes = Routes{
 	Route{
 		"GetXpx",
 		strings.ToUpper("Get"),
-		"/api/faucet/GetXpx/:address",
+		"/api/faucet/GetXpx/:address/:mosaic",
 		getXpx,
 	},
 
@@ -68,7 +69,7 @@ var routes = Routes{
 }
 
 func getConfig(ctx *gin.Context) {
-	cg := Faucet.Config.App.MaxXpx
+	cg := Faucet.Config.App.Mosaics
 
 	utils.Logger(0, "%v", "GetConfig successful!")
 
@@ -76,14 +77,28 @@ func getConfig(ctx *gin.Context) {
 }
 
 func getXpx(ctx *gin.Context) {
-	id, err := getAddressParam(ctx)
+	address, err := getAddressParam(ctx)
 	if err != nil {
 		utils.Logger(2, "%v", "GetXpx fail!")
 		respError(ctx, err)
 		return
 	}
 
-	err = blockchain.TransferXpx(*id, ctx.ClientIP())
+	id, err := getMosaicIdParam(ctx)
+	if err != nil {
+		utils.Logger(2, "%v", "GetXpx fail!")
+		respError(ctx, err)
+		return
+	}
+
+	namespaceId, err := sdk.NewNamespaceIdFromName(*id)
+	if err != nil {
+		utils.Logger(2, "%v", "MosaicId fail!")
+		respError(ctx, err)
+		return
+	}
+
+	err = blockchain.TransferXpx(*address, ctx.ClientIP(), namespaceId)
 	if err != nil {
 		respError(ctx, err)
 		utils.Logger(2, "%v", "GetXpx fail!")

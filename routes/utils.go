@@ -29,6 +29,14 @@ func getAddressParam(ctx *gin.Context) (*string, error) {
 	return &add, nil
 }
 
+func getMosaicIdParam(ctx *gin.Context) (*string, error) {
+	id := ctx.Param("mosaic")
+	if id == "" {
+		return nil, Faucet.MosaicMissing
+	}
+	return &id, nil
+}
+
 func respOk(ctx *gin.Context, res interface{}) {
 	ctx.JSON(http.StatusOK, res)
 }

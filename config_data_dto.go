@@ -68,10 +68,13 @@ type Logging struct {
 }
 
 type App struct {
-	FaucetMasterAcctPrivateKey string     `json:"FaucetMasterAcctPrivateKey"`
-	Namespace                  string     `json:"namespace"`
-	MaxXpx                     sdk.Amount `json:"maxXpx"`
-	MosaicId                   string     `json:"mosaicId"`
+	FaucetMasterAcctPrivateKey string       `json:"FaucetMasterAcctPrivateKey"`
+	Mosaics                    []MosaicInfo `json:"mosaics"`
+}
+
+type MosaicInfo struct {
+	Name        string     `json:"name"`
+	MaxQuantity sdk.Amount `json:"maxQuantity"`
 }
 
 var FaucetAccount *sdk.Account

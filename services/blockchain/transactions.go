@@ -11,12 +11,12 @@ import (
 	"time"
 )
 
-func TransferXpx(Address, ip string) error {
+func TransferXpx(Address, ip string, id *sdk.NamespaceId) error {
 	Address = strings.Replace(Address, "-", "", -1)
 
 	for _, x := range Faucet.Config.WhiteList.Addresses {
 		if Address == x {
-			return createTransfer(Address)
+			return createTransfer(Address, id)
 		}
 	}
 
@@ -32,7 +32,7 @@ func TransferXpx(Address, ip string) error {
 		}
 	}
 
-	if err := createTransfer(Address); err != nil {
+	if err := createTransfer(Address, id); err != nil {
 		return err
 	}
 
@@ -98,18 +98,18 @@ func announceTxn(signedTxn *sdk.SignedTransaction) error {
 		select {
 		case data := <-unconfirmed.Ch:
 			if data.GetAbstractTransaction().TransactionHash.String() == signedTxn.Hash.String() {
-				utils.Logger(0, "Transaction hash -> %v", data.GetAbstractTransaction().TransactionHash)
+				utils.Logger(0, "Unconfirmed transaction hash -> %v", data.GetAbstractTransaction().TransactionHash)
 				return nil
 			}
 
 		case data := <-confirmed.Ch:
 			if data.GetAbstractTransaction().TransactionHash.String() == signedTxn.Hash.String() {
-				utils.Logger(0, "Transaction hash -> %v", data.GetAbstractTransaction().TransactionHash)
+				utils.Logger(0, "Confirmed transaction hash -> %v", data.GetAbstractTransaction().TransactionHash)
 				return nil
 			}
 
 		case data := <-status.Ch:
-			if data.Hash == signedTxn.Hash.String() {
+			if strings.ToUpper(data.Hash) == strings.ToUpper(signedTxn.Hash.String()) {
 				utils.Logger(2, "%v", data.Status)
 				return fmt.Errorf("%v", strings.Replace(strings.Split(data.Status, "Failure_Core_")[1], "_", " ", 1))
 			}
@@ -117,7 +117,25 @@ func announceTxn(signedTxn *sdk.SignedTransaction) error {
 	}
 }
 
-func createTransfer(Address string) error {
+func createTransfer(Address string, MosaicId *sdk.NamespaceId) error {
+	var mosaicId *Faucet.MosaicInfo
+	for _, mosaic := range Faucet.Config.App.Mosaics {
+		nsId, err := sdk.NewNamespaceIdFromName(mosaic.Name)
+		if err != nil {
+			utils.Logger(3, "Failed NamespaceIdFromName: %v", err)
+			return err
+		}
+		if nsId.Id() == MosaicId.Id() {
+			mosaicId = &mosaic
+			break
+		}
+	}
+	if mosaicId == nil {
+		utils.Logger(3, "Mosaic invalid: %v", MosaicId.String())
+		return Faucet.MosaicInvalid
+	}
+
+	mosaicInfo, err := Faucet.BlockchainClient.Resolve.GetMosaicInfoByAssetId(context.Background(), MosaicId)
 
 	add := sdk.NewAddress(Address, Faucet.Config.NetworkType())
 
@@ -127,17 +145,35 @@ func createTransfer(Address string) error {
 	if err != nil {
 		balance = 0
 	} else {
+
+		publicAccount, err := sdk.NewAccountFromPublicKey(restTx.PublicKey, Faucet.Config.NetworkType())
+		if err != nil {
+			return err
+		}
+
+		unconfirmedTx, err := Faucet.BlockchainClient.Account.UnconfirmedTransactions(context.Background(), publicAccount, nil)
+		if err != nil {
+			return err
+		}
+
+		if len(unconfirmedTx) != 0 {
+			return Faucet.TryAgainLater
+		}
+
 		for _, m := range restTx.Mosaics {
 			id := m.AssetId.String()
 
-			if strings.ToUpper(id) == strings.ToUpper(Faucet.Config.App.MosaicId) {
+			if strings.ToUpper(id) == strings.ToUpper(mosaicInfo.MosaicId.String()) {
 				balance = m.Amount
 			}
 		}
-		if balance >= Faucet.Config.App.MaxXpx {
+
+		if balance >= mosaicId.MaxQuantity {
 			return Faucet.MaximumQuantity
 		}
 	}
+
+	Mosaic, err := sdk.NewMosaic(MosaicId, mosaicId.MaxQuantity-balance)
 
 	ttx, err := sdk.NewTransferTransaction(
 		// The maximum amount of time to include the transaction in the blockchain.
@@ -145,7 +181,7 @@ func createTransfer(Address string) error {
 		// The address of the recipient account.
 		add,
 		// The array of mosaic to be sent.
-		[]*sdk.Mosaic{sdk.Xpx(uint64(Faucet.Config.App.MaxXpx - balance))},
+		[]*sdk.Mosaic{Mosaic},
 		// The transaction message of 1024 characters.
 		sdk.NewPlainMessage("Sirius faucet"),
 		Faucet.Config.NetworkType(),
@@ -164,24 +200,3 @@ func createTransfer(Address string) error {
 
 	return nil
 }
-
-//// analog JAVA Uint64.bigIntegerToHex
-//func bigIntegerToHex(id *big.Int) string {
-//	u := fromBigInt(id)
-//	return strings.ToUpper(intToHex(u[1]) + intToHex(u[0]))
-//}
-//
-//func intToHex(u uint32) string {
-//	return fmt.Sprintf("%08x", u)
-//}
-//
-//func fromBigInt(int *big.Int) []uint32 {
-//	if int == nil {
-//		return []uint32{0, 0}
-//	}
-//
-//	var u64 = uint64(int.Int64())
-//	l := uint32(u64 & 0xFFFFFFFF)
-//	r := uint32(u64 >> 32)
-//	return []uint32{l, r}
-//}

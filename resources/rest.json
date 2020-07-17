@@ -7,18 +7,21 @@
     "allowCrossDomain": false
   },
   "blockchain": {
-    "apiUrl": "http://bctestnet4.xpxsirius.io:3000",
+    "apiUrl": "http://bctestnet1.brimstone.xpxsirius.io:3000",
     "network": "publicTest"
   },
   "app": {
-    "FaucetMasterAcctPrivateKey": "88A73400A727AD0F7CA1B63AA6AD10861B326D050EB2627AC9C5A6151E3A03B1",
-    "namespace": "prx",
-    "maxXpx": 10000000000,
-    "mosaicId": "3C0F3DE5298CED2D"
+    "FaucetMasterAcctPrivateKey": "86258172F90639811F2ABD055747D1E11B55A64B68AED2CEA9A34FBD6C0BE790",
+    "mosaics": [
+      {"name": "prx.xpx", "maxQuantity":  10000000000},
+      {"name": "prx.so", "maxQuantity":  10000000000},
+      {"name": "prx.sm", "maxQuantity":  10000000000},
+      {"name": "prx.sc", "maxQuantity":  10000000000}
+    ]
   },
   "blackList":{
-    "byIp": true,
-    "byAddress": true
+    "byIp": false,
+    "byAddress": false
   },
   "db": {
     "dir": "/tmp/swap",
