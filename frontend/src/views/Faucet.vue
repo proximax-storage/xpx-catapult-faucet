@@ -17,6 +17,7 @@
       <div class="container-fluid">
         <v-form v-model="isValidForm" ref="form">
           <v-row>
+            <!-- Mosaics Box -->
             <v-col cols="12" sm="7" md="8" class="mx-auto mt-5" v-if="mosaicsList.length > 0">
               <div class="d-flex flex-wrap justify-center">
                 <v-card v-ripple v-for="(item, i) in listMosaic" :key="i" outlined tile>
@@ -28,12 +29,16 @@
                   >
                     <span class="caption font-weight-medium text-body-2" v-html="item.name"></span>
                     <br />
-                    <span class="caption font-weight-normal text-caption">Maximium <b>{{item.max}}</b></span>
+                    <span class="caption font-weight-normal text-caption">
+                      Maximium
+                      <b>{{item.max}}</b>
+                    </span>
                   </div>
                 </v-card>
               </div>
             </v-col>
 
+            <!-- Input Text -->
             <v-col cols="12" sm="10" md="8" class="mx-auto mt-5 pb-0">
               <v-text-field
                 v-model="address"
@@ -59,6 +64,7 @@
               </v-text-field>
             </v-col>
 
+            <!-- Message Alert -->
             <v-col cols="11" sm="9" md="7" class="mx-auto pt-0" v-if="showValidate">
               <v-alert
                 dark
@@ -69,9 +75,9 @@
                 border="left"
                 :type="typeMessage"
               >{{msjValidate}}</v-alert>
-              <!-- <v-text-field class="pt-0 mt-0" color="success" loading disabled></v-text-field> -->
             </v-col>
 
+            <!-- Button Send -->
             <v-col cols="12" sm="10" md="8" class="mx-auto">
               <div class="d-flex justify-center">
                 <v-btn
@@ -87,42 +93,6 @@
               </div>
             </v-col>
           </v-row>
-
-          <!-- <div class="container mt-1rem">
-            <div class="input-icon-wrap">
-              <span class="input-icon">
-                <span class="fa fa-user">
-                  <img
-                    class="icon-wallet"
-                    src="@/assets/img/icon-wallet-name-red-16h-proximax-sirius-faucet.svg"
-                  />
-                </span>
-              </span>
-              <input
-                class="input-with-icon"
-                id="form-name"
-                maxlength="46"
-                v-bind:class="[classValdiate]"
-                style="width: 100%;"
-                type="text"
-                v-model="address"
-                placeholder="Enter your testnet address here..."
-                @input="checkForm($event)"
-              />
-            </div>
-
-            <div class="div-alert-war">
-              <div v-show="showValidate" :class="alertclass">
-                <div :class="div1">{{msjValidate}}</div>
-                <div :class="div2">
-                  <div :class="loaderclass"></div>
-                </div>
-              </div>
-            </div>
-            <div class="button-class mt-1rem">
-              <button :disabled="isDisabled" type="submit" class="btn">SEND</button>
-            </div>
-          </div>-->
         </v-form>
       </div>
     </div>
@@ -172,25 +142,12 @@ export default {
         .getConfig()
         .then(x => {
           if (x.data && x.data.length > 0) {
-            console.log('Configs:', x.data)
             this.mosaicsList = x.data || []
           }
         })
         .catch(e => {
           if (this.count < 5) this.getConfig()
         })
-      // this.$apiService
-      //   .get(`api/faucet/config`)
-      //   .then(response => {
-      //     console.log('server response', response)
-      //     // this.xpxMaximium = this.amountFormatterSimple(response.data);
-      //   })
-      //   .catch(error => {
-      //     this.xpxMaximium = 0;
-      //     if (this.cont < 5) {
-      //       this.getMaxXpx();
-      //     }
-      //   });
     },
     amountFormatterSimple: function (amount) {
       const amountDivisibility = Number(amount) / Math.pow(10, 6)
@@ -200,19 +157,6 @@ export default {
     },
     validateAddress: function (e) {
       this.address = Utils.addressForm(this.address)
-      // if (Utils.isValid(this.address)) {
-      //   this.showValidate = false
-      //   this.msjValidate = ''
-      //   this.classValdiate = 'success'
-      // } else {
-      //   this.showValidate = true
-      //   this.msjValidate = 'Address must have 40 characters'
-      //   this.isB = true
-      //   this.classValdiate = 'error'
-      //   this.div1 = 'div-alert-text'
-      //   this.div2 = ''
-      //   this.alertclass = 'alert-war'
-      // }
       return Utils.isValid(this.address)
     },
     sendFaucet () {
@@ -220,77 +164,34 @@ export default {
         this.showValidate = true
         this.typeMessage = 'warning'
         this.msjValidate = 'Sending....'
-        // this.buttonValidate = false
-        // this.alertclass = 'alert-war'
-        // this.loaderclass = 'loader'
-        // this.div1 = 'div-loader-text'
-        // this.div2 = 'div-loader-animate'
         this.sendingForm = true
         this.$apiService
           .getMosaic(Utils.clean(this.address), this.mosaicSelected)
           .then(response => {
-            this.sendingForm = false
-            this.typeMessage = 'success'
-            this.msjValidate = `${response.data}` || 'Success'
-            if (this.$refs.form) this.$refs.form.reset()
-            setTimeout(() => {
-              this.showValidate = false
-              this.msjValidate = ''
-            }, 15000)
-            console.log('response', response)
-            /* this.msjValidate = ''
-            this.classValdiate = ''
-            this.buttonValidate = true
-            this.address = ''
-            this.loaderclass = ''
-            this.div1 = 'div-loader-text'
-            this.div2 = ''
-            this.alertclass = 'alert-success'
-            this.showValidate = true
-            this.msjValidate = `${response.data}`
-            setTimeout(
-              function () {
-                this.showValidate = false
-              }.bind(this),
-              15000
-            ) */
+            this.resetAndShowError('success', `${response.data}` || 'Success')
           })
           .catch(error => {
-            console.log('catchhhh error', error)
-            if (this.$refs.form) this.$refs.form.reset()
-            this.sendingForm = false
-            this.typeMessage = 'error'
-            // this.classValdiate = ''
-            // this.buttonValidate = true
-            // this.address = ''
-            // let msj = null
-            this.msjValidate = error.response.data.message
-              ? error.response.data.message
-              : error.response.data
-            setTimeout(() => {
-              this.showValidate = false
-              this.msjValidate = ''
-            }, 10000)
-            // this.loaderclass = ''
-            // this.div1 = 'div-alert-text'
-            // this.div2 = ''
-            // this.alertclass = 'alert-error'
-            // this.showValidate = true
-            // this.msjValidate = `${msj}`
-            // setTimeout(
-            //   function () {
-            //     this.showValidate = false
-            //   }.bind(this),
-            //   10000
-            // )
+            this.resetAndShowError(
+              'error',
+              error.response.data.message
+                ? error.response.data.message
+                : error.response.data
+            )
           })
       }
+    },
+    resetAndShowError (typeError, msg) {
+      this.sendingForm = false
+      this.typeMessage = typeError
+      this.msjValidate = msg
+      if (this.$refs.form) this.$refs.form.reset()
+      setTimeout(() => {
+        this.showValidate = false
+        this.msjValidate = ''
+      }, 10000)
     }
   },
   computed: {
-    // isDisabled: function () {
-    //   return !this.buttonValidate
-    // },
     sendButton () {
       const b = this.button
       b.disabled = !this.isValidForm || this.sendingForm
@@ -302,7 +203,6 @@ export default {
       m.forEach(element => {
         element.max = this.amountFormatterSimple(element.maxQuantity)
       })
-      console.log(m)
       return m
     }
   }
