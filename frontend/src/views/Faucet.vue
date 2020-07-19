@@ -170,9 +170,9 @@ export default {
           .catch(error => {
             this.resetAndShowError(
               'error',
-              error.response.data.message
-                ? error.response.data.message
-                : error.response.data
+              error?.response?.data?.message
+                ? error?.response?.data?.message
+                : error?.response?.data || 'Unexpected error'
             )
           })
       }
