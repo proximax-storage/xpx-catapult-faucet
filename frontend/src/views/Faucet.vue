@@ -13,6 +13,7 @@
       </v-col>
     </v-row>
 
+    <!-- Form -->
     <v-form v-model="isValidForm" ref="form">
       <v-row>
         <!-- Mosaics Box -->
@@ -54,8 +55,8 @@
               <v-img
                 class="mr-5 mt-2 mb-4"
                 alt="logo"
-                height="30"
-                width="30"
+                height="25"
+                width="25"
                 src="@/assets/img/icon-wallet-name-red-16h-proximax-sirius-faucet.svg"
               ></v-img>
             </template>
@@ -207,8 +208,8 @@ export default {
 
 <style>
 .v-messages__message {
-  font-size: 16px !important;
-  margin-top: 6px !important;
+  font-size: 14px !important;
+  margin-top: 4px !important;
   margin-bottom: 6px !important;
   font-weight: 500 !important;
 }
