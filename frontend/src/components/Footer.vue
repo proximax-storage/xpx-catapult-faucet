@@ -2,7 +2,7 @@
   <v-footer app absolute>
     <v-row>
       <v-col cols="12" class="text-center">
-        <div class="text-body-2 font-weight-normal">
+        <div class="text-caption font-weight-normal">
           <span>© ProximaX 2019. All Rights Reserved.</span>
           <span class="font-weight-bold primary--text">&nbsp; Sirius Faucet {{version}}</span>
         </div>

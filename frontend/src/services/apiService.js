@@ -8,24 +8,23 @@ class ApiService {
     this.headers = headers
   }
 
-  get (cb = null) {
-    return this.axios.get(`${cb}`)
-  }
-
-  post () {
-    console.log('post')
-  }
-
-  put () {
-    console.log('put')
-  }
-
-  delete () {
-    console.log('delete')
-  }
-
+  /**
+   *
+   *
+   * @returns
+   * @memberof ApiService
+   */
   getConfig () {
     return axios.get('/api/faucet/config')
+  }
+
+  /**
+   *
+   * @param {*} address
+   * @param {*} mosaic
+   */
+  getMosaic (address, mosaic) {
+    return axios.get(`/api/faucet/GetXpx/${address}/${mosaic}`)
   }
 }
 
