@@ -1,104 +1,33 @@
 <template>
-  <div id="app">
-    <!-- <div>
-      <img src="@/assets/img/background-proximax.jpg"  style="width: 100%; height: 300px;">
-    </div>-->
-    <div class="header">
+  <v-app>
+    <v-app-bar color="white" app flat dense height="70" clipped-left class="d-flex align-baseline">
+      <div>
+        <!-- Logo -->
+        <img class="mr-2" :src="require('@/assets/img/logo.svg')" alt="logo" height="50" />
+        <span class="caption font-weight-regular">{{version}}</span>
+      </div>
+    </v-app-bar>
 
-      <div class="logo"> <img class=" responsive" src="@/assets/img/logo-proximax-sirius-faucet_new.svg"> {{version}} </img> </div>
-      
-    </div>
-    <main>
-      <router-view/>
-      <footer>
-        <p class="copyright">© ProximaX 2019. All Rights Reserved. <b> Sirius Faucet {{version}}</b> </p>
-      </footer>
-    </main>
+    <!-- Router -->
+    <v-main>
+      <router-view :key="$route.path"></router-view>
+    </v-main>
 
-    <notifications group="foo"/>
-  </div>
+    <!-- Footer -->
+    <my-footer/>
+  </v-app>
 </template>
 
 <script>
+import Footer from '@/components/Footer.vue'
+
 export default {
-
-  data() { return {
-    version: "v0.3.0"
-    }}
-};
+  name: 'App',
+  data: () => ({
+    version: 'v0.3.0'
+  }),
+  components: {
+    'my-footer': Footer
+  }
+}
 </script>
-
-<style lang="scss">
-.header {
-  overflow: hidden;
-  padding: 20px 10px;
-}
-.logo {
-  float: none;
-  display: block;
-  text-align: left;
-  font-size: 15px;
-
-}
-.responsive{
-  width: 250px;
-}
-
-@media screen and ( max-width: 1024px ) {
-img.responsive { width: 200px; }
-.logo {
-   font-size: 10px;
-}
-}
-
-@media screen and ( max-width: 800px ) {
-img.responsive { width: 170px;
- }
- .logo {
-   font-size: 10px;
-}
-}
-@media screen and ( max-width: 500px ) {
-img.responsive { width: 150px;
- .logo {
-   font-size: 10px;
-}
-
- }
-}
-@media screen and ( min-width: 1025px) {
-img.responsive { width: 300px;}
-}
-img.responsive { height: auto; }
-body {
-  overflow: auto;
-  background-repeat: no-repeat;
-  background-size: contain;
-  display: block;
-  margin: 0px;
-  flex-direction: column;
-  background-color: #ffffff;
- font-family: 'Lato', sans-serif;
-}
-
-html {
-  height: 100%;
-}
-
-footer {
-  position: relative;
-}
-footer>p>b {
-    color: #df4c48;
-}
-p.copyright {
-  position: fixed;
-  margin-bottom: 0%;
-  width: 100%;
-  color: #000000;
-  line-height: 40px;
-  font-size: 12px;
-  text-align: center;
-  bottom: 0;
-}
-</style>
