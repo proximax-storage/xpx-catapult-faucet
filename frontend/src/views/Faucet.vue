@@ -6,7 +6,7 @@
         <div>
           <span class="primary--text text-h4 font-weight-bold" v-html="title"></span>
         </div>
-        <div class="mt-2">
+        <div class="mt-1">
           <span class="font-weight-bold" v-html="subtitle"></span>
         </div>
         <v-divider></v-divider>
