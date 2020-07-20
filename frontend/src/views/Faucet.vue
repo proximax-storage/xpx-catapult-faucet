@@ -23,7 +23,7 @@
               <div
                 @click="mosaicSelected = item.name"
                 v-ripple
-                class="pa-4 cursor-p text-center"
+                class="pa-2 cursor-p text-center"
                 :class="mosaicSelected === item.name ? 'primary white--text': ''"
               >
                 <span class="caption font-weight-medium text-body-2" v-html="item.name"></span>
