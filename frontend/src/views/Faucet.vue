@@ -157,6 +157,7 @@ export default {
       return Utils.isValid(this.address)
     },
     sendFaucet () {
+      this.showValidate = false
       if (Utils.isValid(this.address)) {
         this.showValidate = true
         this.typeMessage = 'warning'
@@ -185,7 +186,7 @@ export default {
       setTimeout(() => {
         this.showValidate = false
         this.msjValidate = ''
-      }, 10000)
+      }, 15000)
     }
   },
   computed: {
