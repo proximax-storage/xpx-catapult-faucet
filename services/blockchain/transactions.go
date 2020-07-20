@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func TransferXpx(Address, ip string, id *sdk.NamespaceId) error {
+func TransferPrx(Address, ip string, id *sdk.NamespaceId) error {
 	Address = strings.Replace(Address, "-", "", -1)
 
 	for _, x := range Faucet.Config.WhiteList.Addresses {

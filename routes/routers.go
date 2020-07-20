@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
@@ -98,14 +99,15 @@ func getXpx(ctx *gin.Context) {
 		return
 	}
 
-	err = blockchain.TransferXpx(*address, ctx.ClientIP(), namespaceId)
+	err = blockchain.TransferPrx(*address, ctx.ClientIP(), namespaceId)
 	if err != nil {
 		respError(ctx, err)
 		utils.Logger(2, "%v", "GetXpx fail!")
 		return
 	} else {
 		utils.Logger(0, "%v", "GetXpx complete!")
-		respOk(ctx, "XPX sent!")
+		assetMsg := fmt.Sprintf("%v sent!", strings.ToUpper(strings.Split(*id, ".")[1]))
+		respOk(ctx, assetMsg)
 	}
 }
 
