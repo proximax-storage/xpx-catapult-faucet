@@ -14,9 +14,9 @@
     "FaucetMasterAcctPrivateKey": "86258172F90639811F2ABD055747D1E11B55A64B68AED2CEA9A34FBD6C0BE790",
     "mosaics": [
       {"name": "prx.xpx", "maxQuantity":  10000000000},
-      {"name": "prx.so", "maxQuantity":  10000000000},
-      {"name": "prx.sm", "maxQuantity":  10000000000},
-      {"name": "prx.sc", "maxQuantity":  10000000000}
+      {"name": "prx.so", "maxQuantity":  1000000},
+      {"name": "prx.sm", "maxQuantity":  1000000},
+      {"name": "prx.sc", "maxQuantity":  1000000}
     ]
   },
   "blackList":{

@@ -13,7 +13,7 @@ var (
 	AddressRegistered      BadRequestError  = errors.New("Test-XPX can only be sent once every 24 hours")
 	IpAddressRegistered    BadRequestError  = errors.New("Test-XPX can only be sent once every 24 hours")
 	RecordAlready          BadRequestError  = errors.New("record already exists")
-	MaximumQuantity        BadRequestError  = errors.New("The account has the maximum amount of XPX")
+	MaximumQuantity        BadRequestError  = errors.New("The account has the maximum amount of mosaic")
 	TryAgainLater          BadRequestError  = errors.New("Try again later")
 	Unauthenticated        NotAuthenticated = errors.New("not authenticated")
 	Unauthorized           NotAuthorized    = errors.New("not authorized")
