@@ -24,7 +24,7 @@ import Footer from '@/components/Footer.vue'
 export default {
   name: 'App',
   data: () => ({
-    version: 'v0.3.0'
+    version: 'v0.3.2'
   }),
   components: {
     'my-footer': Footer
