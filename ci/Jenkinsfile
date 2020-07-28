@@ -16,14 +16,46 @@ pipeline {
     }
 
   stages {
-    stage('Build and Publish Release Image'){
+    stage('Build'){
       steps {
-        echo 'Build and Publish Image'
+        withDockerContainer(image: 'golang:1.14.6-buster', args:'-u root') {
+          sh '''
+          export GO111MODULE=on && \
+            go mod download && \
+            go mod vendor && \
+            cd cmd && \
+            CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags netgo -ldflags '-w' -o server.run
+          '''
+        }
+                  
+        withDockerContainer(image: 'node:10'){
+          sh '''
+            cd frontend
+            npm install
+            npm run build
+          '''
+        }
+      }
+    }
+
+    stage('Archive Artifact'){
+      steps{
+        sh '''
+          tar -Jcvf xpx-catapult-faucet.tar.xz cmd/server.run frontend/dist/
+        '''
+        archiveArtifacts 'xpx-catapult-faucet.tar.xz'
+      }
+    }
+
+    stage('Publish Image'){
+      when {
+        tag "v*"
+      }
+      steps {
         script {
           def newImage = docker.build("${IMAGE}")
           docker.withRegistry("https://${DOCKER_REGISTRY}", "${CREDENTIAL_ID}"){
-            newImage.push("master-jenkins-build-${env.BUILD_NUMBER}") // push using Jenkins build number
-            newImage.push("master") //update Docker Image master
+            newImage.push("${env.GIT_BRANCH}")
           }
         }
       }

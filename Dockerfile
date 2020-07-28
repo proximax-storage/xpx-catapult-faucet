@@ -1,9 +1,9 @@
-FROM golang:1.12.7-stretch
+FROM gcr.io/distroless/base-debian10
 
 WORKDIR /faucet
 # copy required files
 COPY cmd/server.run .
-COPY ./dist dist/
+COPY frontend/dist dist/
 
 # server.run as entry point
 ENTRYPOINT [ "/faucet/server.run" ]
