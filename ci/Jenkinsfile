@@ -41,7 +41,7 @@ pipeline {
     stage('Archive Artifact'){
       steps{
         sh '''
-          tar -Jcvf xpx-catapult-faucet.tar.xz cmd/server.run frontends/dist/
+          tar -Jcvf xpx-catapult-faucet.tar.xz cmd/server.run frontend/dist/
         '''
         archiveArtifacts 'xpx-catapult-faucet.tar.xz'
       }
