@@ -29,10 +29,7 @@ func IsAddressValid(address string, networkType sdk.NetworkType) error {
 // return True if correct, false otherwise
 func IsHexadecimal(str string) bool {
 	exp := regexp.MustCompile("^[0-9a-fA-F]+$")
-	if exp.MatchString(str) == true {
-		return true
-	}
-	return false
+	return exp.MatchString(str)
 }
 func Logger(level Level, format string, args ...interface{}) {
 	logger(level, 0, format, args...)

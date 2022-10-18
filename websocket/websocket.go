@@ -126,7 +126,7 @@ func restParser(data []byte) (string, error) {
 	return subscribe, nil
 }
 
-func (s *subscribeInfo) buildType(t []byte) error {
+func (s *subscribeInfo) buildType(t []byte, generationHash *sdk.Hash) error {
 	defer panicCtrl()
 	switch s.name {
 	case "block":
@@ -183,7 +183,7 @@ func (s *subscribeInfo) buildType(t []byte) error {
 		return nil
 
 	case "partialAdded":
-		data, err := sdk.MapTransaction(bytes.NewBuffer([]byte(t)))
+		data, err := sdk.MapTransaction(bytes.NewBuffer([]byte(t)), generationHash)
 		if err != nil {
 			return err
 		}
@@ -192,7 +192,7 @@ func (s *subscribeInfo) buildType(t []byte) error {
 		return nil
 
 	case "unconfirmedAdded":
-		data, err := sdk.MapTransaction(bytes.NewBuffer([]byte(t)))
+		data, err := sdk.MapTransaction(bytes.NewBuffer([]byte(t)), generationHash)
 		if err != nil {
 			return err
 		}
@@ -201,7 +201,7 @@ func (s *subscribeInfo) buildType(t []byte) error {
 		return nil
 
 	default:
-		data, err := sdk.MapTransaction(bytes.NewBuffer([]byte(t)))
+		data, err := sdk.MapTransaction(bytes.NewBuffer([]byte(t)), generationHash)
 		if err != nil {
 			return err
 		}
@@ -341,7 +341,7 @@ func (c *ClientWebsocket) subsChannel(s *subscribe) error {
 					uid:  s.Uid,
 				}
 
-				if err := b.buildType(resp); err != nil {
+				if err := b.buildType(resp, c.config.GenerationHash); err != nil {
 					errCh <- &ErrorInfo{
 						Error: err,
 					}
@@ -361,12 +361,12 @@ func (t *ClientWebsocket) Close() {
 	t.client.Close()
 }
 func NewConnectWs(host string, timeout time.Duration) (*ClientWebsocket, error) {
-	var v []*url.URL
+	var v []url.URL
 	u, err := url.Parse(host)
 	if err != nil {
 		return nil, err
 	} else {
-		v = append(v, u)
+		v = append(v, *u)
 	}
 
 	newconf := &sdk.Config{BaseURLs: v}

@@ -4,17 +4,18 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/proximax-storage/xpx-catapult-faucet"
-	"github.com/proximax-storage/xpx-catapult-faucet/db"
-	"github.com/proximax-storage/xpx-catapult-faucet/routes"
-	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	Faucet "github.com/proximax-storage/xpx-catapult-faucet"
+	"github.com/proximax-storage/xpx-catapult-faucet/db"
+	"github.com/proximax-storage/xpx-catapult-faucet/routes"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 )
 
 const (

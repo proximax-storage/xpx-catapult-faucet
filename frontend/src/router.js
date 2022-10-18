@@ -4,9 +4,9 @@ Vue.use(Router)
 function load(component) {
   return () => import(/* webpackChunkName: "[request]" */ `@/views/${component}.vue`)
 }
-function loadChildren(component, child) {
-  return () => import(/* webpackChunkName: "[request]" */ `@/components/${component}/${child}.vue`)
-}
+// function loadChildren(component, child) {
+//   return () => import(/* webpackChunkName: "[request]" */ `@/components/${component}/${child}.vue`)
+// }
 export default new Router({
   routes: [
     {
