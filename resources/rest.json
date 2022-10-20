@@ -7,14 +7,14 @@
     "allowCrossDomain": false
   },
   "blockchain": {
-    "apiUrl": "https://api-2.testnet2.xpxsirius.io",
+    "apiUrl": "https://bctestnet3.brimstone.xpxsirius.io",
     "network": "publicTest"
   },
   "app": {
-    "FaucetMasterAcctPrivateKey": "88A73400A727AD0F7CA1B63AA6AD10861B326D050EB2627AC9C5A6151E3A03B1",
+    "FaucetMasterAcctPrivateKey": "6C5FC8C3B40B96F6CAAF2390EB885DA95C594374EB44F28048DF68B55D9661A4",
     "namespace": "prx",
-    "maxXpx": 10000000000,
-    "mosaicId": "3C0F3DE5298CED2D"
+    "maxXpx": 10000000,
+    "mosaicId": "13bfc518e40549d7"
   },
   "blackList":{
     "byIp": true,
@@ -27,9 +27,8 @@
   },
   "whiteList":{
     "addresses": [
-      "VCX6CKVDQJZ76GRHDP5WLZKLACRNYDCLPZG5CFR5",
-      "VAURUUY4PVDB2YBGOMXFCAADUPKQCHK3E2AHNHF6",
-      "VDYLUT4WDO36SEHBNINXKXJHYGG55EN43BDEOCTW"
+      "VB3V4PYRYQSZHEUF4L3LXYDJPJVCGCCHEZA5MJZM",
+      "VC4BFOK52YZXXVKEDF22XSFPELPC6EEN4FENPBYH"
     ]
   },
 
