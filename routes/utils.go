@@ -21,10 +21,10 @@ func getAddressParam(ctx *gin.Context) (*string, error) {
 	add := ctx.Param("address")
 	if add != "" {
 		if err := utils.IsAddressValid(add, Faucet.Config.NetworkType()); err != nil {
-			return nil, Faucet.AddressInvalid
+			return nil, Faucet.ErrAddressInvalid
 		}
 	} else {
-		return nil, Faucet.AddressMissing
+		return nil, Faucet.ErrAddressMissing
 	}
 	return &add, nil
 }

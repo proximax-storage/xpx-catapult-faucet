@@ -3,12 +3,13 @@ package blockchain
 import (
 	"context"
 	"fmt"
-	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
-	"github.com/proximax-storage/xpx-catapult-faucet"
-	"github.com/proximax-storage/xpx-catapult-faucet/db"
-	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	"strings"
 	"time"
+
+	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
+	Faucet "github.com/proximax-storage/xpx-catapult-faucet"
+	"github.com/proximax-storage/xpx-catapult-faucet/db"
+	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 )
 
 func TransferXpx(Address, ip string) error {
@@ -22,13 +23,13 @@ func TransferXpx(Address, ip string) error {
 
 	if Faucet.Config.BlackList.ByIp {
 		if db.DbStorage.GetIp(ip) {
-			return Faucet.IpAddressRegistered
+			return Faucet.ErrIpAddressRegistered
 		}
 	}
 
 	if Faucet.Config.BlackList.ByAddress {
 		if db.DbStorage.GetAddress(Address) {
-			return Faucet.AddressRegistered
+			return Faucet.ErrAddressRegistered
 		}
 	}
 
@@ -59,7 +60,7 @@ func announceTxn(signedTxn *sdk.SignedTransaction) error {
 	ws, err := Faucet.NewWebsocket()
 	if err != nil {
 		utils.Logger(3, "Failed to create websocket: %v", err)
-		return Faucet.WebsocketError
+		return Faucet.ErrWebsocket
 	}
 	defer ws.Close()
 
@@ -68,21 +69,21 @@ func announceTxn(signedTxn *sdk.SignedTransaction) error {
 	unconfirmed, err := ws.Subscribe.UnconfirmedAdded(address)
 	if err != nil {
 		utils.Logger(3, "Failed to open websocket for unconfirmed txn: %v", err)
-		return Faucet.WebsocketError
+		return Faucet.ErrWebsocket
 	}
 	defer unconfirmed.Unsubscribe()
 
 	confirmed, err := ws.Subscribe.ConfirmedAdded(address)
 	if err != nil {
 		utils.Logger(3, "Failed to open websocket for confirmed txn: %v", err)
-		return Faucet.WebsocketError
+		return Faucet.ErrWebsocket
 	}
 	defer confirmed.Unsubscribe()
 
 	status, err := ws.Subscribe.Status(address)
 	if err != nil {
 		utils.Logger(3, "Failed to open websocket for status: %v", err)
-		return Faucet.WebsocketError
+		return Faucet.ErrWebsocket
 	}
 	defer status.Unsubscribe()
 
@@ -91,7 +92,7 @@ func announceTxn(signedTxn *sdk.SignedTransaction) error {
 	_, err = Faucet.BlockchainClient.Transaction.Announce(context.Background(), signedTxn)
 	if err != nil {
 		utils.Logger(3, "Failed to announce status: %v", err)
-		return Faucet.BlockchainApiError
+		return Faucet.ErrBlockchainApi
 	}
 
 	for {
@@ -130,16 +131,16 @@ func createTransfer(Address string) error {
 		for _, m := range restTx.Mosaics {
 			id := m.AssetId.String()
 
-			if strings.ToUpper(id) == strings.ToUpper(Faucet.Config.App.MosaicId) {
+			if strings.EqualFold(strings.ToUpper(id), strings.ToUpper(Faucet.Config.App.MosaicId)) {
 				balance = m.Amount
 			}
 		}
 		if balance >= Faucet.Config.App.MaxXpx {
-			return Faucet.MaximumQuantity
+			return Faucet.ErrMaximumQuantity
 		}
 	}
 
-	ttx, err := sdk.NewTransferTransaction(
+	ttx, _ := sdk.NewTransferTransaction(
 		// The maximum amount of time to include the transaction in the blockchain.
 		sdk.NewDeadline(time.Hour*1),
 		// The address of the recipient account.
