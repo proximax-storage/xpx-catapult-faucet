@@ -3,13 +3,13 @@ package Faucet
 import (
 	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"strings"
-	"sync"
+	// "sync"
 	"time"
 )
 
-var (
-	mtx sync.RWMutex
-)
+// var (
+// 	mtx sync.RWMutex
+// )
 
 type ConfigData struct {
 	Blockchain Blockchain `json:"blockchain"`
