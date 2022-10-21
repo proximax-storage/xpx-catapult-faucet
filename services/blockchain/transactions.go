@@ -140,7 +140,7 @@ func createTransfer(Address string) error {
 		}
 	}
 
-	ttx, _ := sdk.NewTransferTransaction(
+	ttx, _ := Faucet.BlockchainClient.NewTransferTransaction(
 		// The maximum amount of time to include the transaction in the blockchain.
 		sdk.NewDeadline(time.Hour*1),
 		// The address of the recipient account.
@@ -149,7 +149,6 @@ func createTransfer(Address string) error {
 		[]*sdk.Mosaic{sdk.Xpx(uint64(Faucet.Config.App.MaxXpx - balance))},
 		// The transaction message of 1024 characters.
 		sdk.NewPlainMessage("Sirius faucet"),
-		Faucet.Config.NetworkType(),
 	)
 
 	// Sign transaction

@@ -1,9 +1,10 @@
 package Faucet
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/proximax-storage/xpx-catapult-faucet/utils"
-	"time"
 )
 
 func ParseLogger(inner gin.HandlerFunc, name string) gin.HandlerFunc {
