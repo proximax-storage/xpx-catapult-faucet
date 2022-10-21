@@ -14,7 +14,7 @@ var BlockchainClient = new(sdk.Client)
 func InitClient() error {
 	utils.Logger(0, "initializing sirius client")
 	conf, err := sdk.NewConfig(context.Background(), []string{Config.Blockchain.ApiUrl})
-	conf.FeeCalculationStrategy = sdk.MiddleCalculationStrategy
+	conf.FeeCalculationStrategy = Config.Blockchain.FeeCalculationStrategy
 	if err != nil {
 		return err
 	}

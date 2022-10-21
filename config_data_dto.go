@@ -39,6 +39,7 @@ type WhiteList struct {
 type Blockchain struct {
 	ApiUrl  string `json:"apiUrl"`
 	Network string `json:"network"`
+	FeeCalculationStrategy sdk.FeeCalculationStrategy `json:"feeCalculationStrategy"`
 }
 
 type Server struct {
