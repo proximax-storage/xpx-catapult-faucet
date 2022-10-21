@@ -2,6 +2,7 @@ package Faucet
 
 import (
 	"context"
+
 	"github.com/proximax-storage/go-xpx-chain-sdk/sdk"
 	"github.com/proximax-storage/xpx-catapult-faucet/utils"
 	ws "github.com/proximax-storage/xpx-catapult-faucet/websocket"
@@ -14,7 +15,7 @@ var BlockchainClient = new(sdk.Client)
 func InitClient() error {
 	utils.Logger(0, "initializing sirius client")
 	conf, err := sdk.NewConfig(context.Background(), []string{Config.Blockchain.ApiUrl})
-	conf.FeeCalculationStrategy = Config.Blockchain.FeeCalculationStrategy
+	conf.FeeCalculationStrategy = Config.Blockchain.MinFeeMultiplier
 	if err != nil {
 		return err
 	}
