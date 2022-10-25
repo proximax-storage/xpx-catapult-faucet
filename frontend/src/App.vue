@@ -11,7 +11,7 @@
     <main>
       <router-view/>
       <footer>
-        <p class="copyright">© ProximaX 2019. All Rights Reserved. <b> Sirius Faucet {{version}}</b> </p>
+        <p class="copyright">© ProximaX 2022. All Rights Reserved. <b> Sirius Faucet {{version}}</b> </p>
       </footer>
     </main>
 
@@ -23,7 +23,7 @@
 export default {
 
   data() { return {
-    version: "v0.3.0"
+    version: "v0.4.0"
     }}
 };
 </script>
