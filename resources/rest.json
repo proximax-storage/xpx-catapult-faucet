@@ -4,7 +4,7 @@
     "description": "ProximaX Sirius Faucet",
     "port": 8083,
     "host": "localhost",
-    "allowCrossDomain": true
+    "allowCrossDomain": false
   },
   "blockchain": {
     "apiUrl": "https://bctestnet3.brimstone.xpxsirius.io",
