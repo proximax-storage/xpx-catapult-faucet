@@ -12,7 +12,7 @@ FROM node:14-alpine AS nodejs-builder
 WORKDIR /app/src
 COPY frontend .
 RUN npm install
-RUN npm run build
+RUN npm run build:prod
 
 
 FROM alpine:3.16
