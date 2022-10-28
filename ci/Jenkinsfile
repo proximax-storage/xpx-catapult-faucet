@@ -17,13 +17,15 @@ pipeline {
 
   stages {
     stage('Build and Publish Release Image'){
+      when {
+        tag "v*"
+      }
       steps {
         echo 'Build and Publish Image'
         script {
           def newImage = docker.build("${IMAGE}")
           docker.withRegistry("https://${DOCKER_REGISTRY}", "${CREDENTIAL_ID}"){
-            newImage.push("master-jenkins-build-${env.BUILD_NUMBER}") // push using Jenkins build number
-            newImage.push("master") //update Docker Image master
+            newImage.push("${env.GIT_BRANCH}")
           }
         }
       }
